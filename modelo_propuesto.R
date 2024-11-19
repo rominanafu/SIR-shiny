@@ -23,10 +23,14 @@ I[1] <- E[1] + I_sint[1] + I_asint[1]
 S[1] <- N - I[1]
 
 # probabilidades
-prob_infectarse <- 0.1
+prob_infectarse <- 0.05
 prob_sintomatico <- 0.7
 prob_cuarentena_sint <- 0.9
 prob_recuperarse <- 0.95
+
+# Rango de personas con las que alguien interactua
+mean_interactions <- 5
+stdDesv_interactions <- 2
 
 for (i in seq(dias-1)) {
   
@@ -44,8 +48,22 @@ for (i in seq(dias-1)) {
   
   # pasar de susceptibles a incubando
   
-  prob_infectarse <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
-  infected <- sum(rbinom(S[i], 1, prob_infectarse))
+  p_encuentro <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
+  
+  if( S[i] != 0 ) {
+    interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
+    contagios <- rep(0, S[i])
+    for( j in seq(S[i]) ) {
+      contagios[j] <- min(1, rbinom(1, interacciones[j], p_encuentro*prob_infectarse))
+    }
+    #cat("", fill = TRUE)
+    infected <- sum(contagios)
+  }
+  else  {
+    infected <- 0
+  }
+  
+  #infected <- sum(rbinom(S[i], 1, prob_infectarse))
   S[i+1] <- S[i+1] - infected
   E[1] <- infected
   
