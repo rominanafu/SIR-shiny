@@ -2,14 +2,14 @@
 library(data.table)
 library(ggplot2)
 
-dias <- 200
+dias <- 365*2
 t <- 1:dias
 
-dias_incubacion <- 5
-dias_infeccion <- 14
+dias_incubacion <- 4
+dias_infeccion <- 7
 dias_inmunidad <- 60
 
-N <- 1000
+N <- 3000
 S <- rep(0, dias)
 E <- rep(0, dias_incubacion+1)
 I_sint <- rep(0, dias_infeccion+1)
@@ -17,6 +17,7 @@ IS_cuarentena <- rep(0, dias_infeccion+1)
 I_asint <- rep(0, dias_infeccion+1)
 I <- rep(0, dias) # E + I_sint + I_asint
 R <- rep(0, dias_inmunidad+1)
+total_recovered <- rep(0, dias)
 
 E[1] <- 4
 I[1] <- E[1] + I_sint[1] + I_asint[1]
@@ -88,12 +89,13 @@ for (i in seq(dias-1)) {
     infected -
     I_sint[dias_infeccion+1] -
     I_asint[dias_infeccion+1]
-  
+  total_recovered[i] <- sum(R)
 }
 
 p <- ggplot() +
   geom_line(aes(x=t, y=S, color='Susceptibles')) +
   geom_line(aes(x=t, y=I, color='Infectados')) +
+  geom_line(aes(x=t, y=total_recovered, color='Recuperados')) +
   xlab('Tiempo (s)') +
   ylab('Personas') +
   labs(title = 'Modelo SIR')
