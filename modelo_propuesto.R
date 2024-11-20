@@ -9,7 +9,7 @@ dias_incubacion <- 4
 dias_infeccion <- 7
 dias_inmunidad <- 60
 
-N <- 3000
+N <- 100000
 S <- rep(0, dias)
 E <- rep(0, dias_incubacion+1)
 I_sint <- rep(0, dias_infeccion+1)
@@ -49,16 +49,22 @@ for (i in seq(dias-1)) {
   
   # pasar de susceptibles a incubando
   
+  # revisar si los que están en E también pueden contagiar
   p_encuentro <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
   
   if( S[i] != 0 ) {
     interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
-    contagios <- rep(0, S[i])
-    for( j in seq(S[i]) ) {
-      contagios[j] <- min(1, rbinom(1, interacciones[j], p_encuentro*prob_infectarse))
-    }
-    #cat("", fill = TRUE)
+    probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
+    contagios <- 1-rbinom(S[i], 1, probabilities)
     infected <- sum(contagios)
+    
+    #contagios <- rep(0, S[i])
+    #for( j in seq(S[i]) ) {
+      #contagios[j] <- 1-rbinom(1, 1, (1-p_encuentro*prob_infectarse)^interacciones[j])
+      #contagios[j] <- min(1, rbinom(1, interacciones[j], p_encuentro*prob_infectarse))
+    #}
+    #cat("", fill = TRUE)
+    #infected <- sum(contagios)
   }
   else  {
     infected <- 0
