@@ -347,18 +347,34 @@ server <- function(input, output, session) {
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 5px;
             padding-top: 10px;",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie
-        laoreet purus, ac lacinia arcu fermentum non. Sed suscipit erat mi.
-        Nulla nec quam sed metus gravida placerat. Ut maximus orci ac quam
-        pellentesque tristique. Aenean vitae euismod ligula, vitae sollicitudin
-        erat. Sed sit amet lectus feugiat, placerat nulla ut, varius risus.
-        Quisque quis gravida lectus. Nulla lobortis mattis mauris, at condimentum
-        odio luctus quis. Integer vel odio ex. Orci varius natoque penatibus et
-        magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id
-        sodales justo. Aenean vitae gravida justo. Mauris ut posuere odio, sit
-        amet accumsan quam. Mauris ultrices, odio vitae facilisis blandit, risus
-        felis accumsan nulla, in imperdiet erat nulla in diam. Pellentesque
-        pellentesque orci a mi sollicitudin porta."
+            "El modelo SIR (Susceptible-Infectados-Recuperados) es una herramienta 
+            matemática que se originó en 1927 gracias al trabajo de Kermack y McKendrick,
+            quienes lo emplearon para estudiar epidemias como la peste y el cólera. 
+            A pesar de haber sido formulado hace casi un siglo, este modelo sigue 
+            siendo una pieza clave en la epidemiología matemática, ya que permite 
+            analizar cómo una enfermedad se propaga dentro de una población cerrada 
+            y homogénea."
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 5px;
+            padding-top: 10px;",
+            "El modelo divide a la población en tres grupos: los susceptibles (S), 
+            los infectados (I) y los recuperados (R). Los parámetros clave son la 
+            tasa de transmisión () y la tasa de recuperación (), de los cuales 
+            se deriva el número reproductivo básico (), una medida crítica 
+            para determinar si una enfermedad puede generar un brote. Además de 
+            su aplicación en epidemiología, el modelo SIR también se utiliza en 
+            áreas como redes sociales, marketing viral y ciberseguridad, para estudiar 
+            la propagación de ideas, productos o virus informáticos."
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 5px;
+            padding-top: 10px;",
+            "Este modelo puede extenderse mediante la incorporación de nuevos estados, 
+            como un periodo de latencia en los modelos SEIR o inmunidad temporal 
+            en los modelos SIRS. Estas extensiones lo hacen adaptable a diversos 
+            escenarios reales, como se demuestra en su aplicación para analizar 
+            brotes históricos y recientes, incluyendo la pandemia de COVID-19."
           ),
           div(
             actionButton(

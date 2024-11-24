@@ -9,7 +9,7 @@ dias_incubacion <- 4
 dias_infeccion <- 7
 dias_inmunidad <- 60
 
-N <- 100000
+N <- 10000
 S <- rep(0, dias)
 E <- rep(0, dias_incubacion+1)
 I_sint <- rep(0, dias_infeccion+1)
@@ -17,7 +17,7 @@ IS_cuarentena <- rep(0, dias_infeccion+1)
 I_asint <- rep(0, dias_infeccion+1)
 I <- rep(0, dias) # E + I_sint + I_asint
 R <- rep(0, dias_inmunidad+1)
-total_recovered <- rep(0, dias)
+total_deads <- rep(0, dias)
 
 E[1] <- 4
 I[1] <- E[1] + I_sint[1] + I_asint[1]
@@ -49,7 +49,7 @@ for (i in seq(dias-1)) {
   
   # pasar de susceptibles a incubando
   
-  # revisar si los que están en E también pueden contagiar
+  # revisar si los que están en E también pueden contagiar (investigar)
   p_encuentro <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
   
   if( S[i] != 0 ) {
@@ -57,14 +57,6 @@ for (i in seq(dias-1)) {
     probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
     contagios <- 1-rbinom(S[i], 1, probabilities)
     infected <- sum(contagios)
-    
-    #contagios <- rep(0, S[i])
-    #for( j in seq(S[i]) ) {
-      #contagios[j] <- 1-rbinom(1, 1, (1-p_encuentro*prob_infectarse)^interacciones[j])
-      #contagios[j] <- min(1, rbinom(1, interacciones[j], p_encuentro*prob_infectarse))
-    #}
-    #cat("", fill = TRUE)
-    #infected <- sum(contagios)
   }
   else  {
     infected <- 0
@@ -90,18 +82,20 @@ for (i in seq(dias-1)) {
   recovered <- sum(rbinom(I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1],
                           1, prob_recuperarse))
   R[1] <- recovered
+  total_deads[i+1] <- total_deads[i]+I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1]-
+    recovered
   
   I[i+1] <- I[i] +
     infected -
     I_sint[dias_infeccion+1] -
     I_asint[dias_infeccion+1]
-  total_recovered[i] <- sum(R)
+  
 }
 
 p <- ggplot() +
   geom_line(aes(x=t, y=S, color='Susceptibles')) +
   geom_line(aes(x=t, y=I, color='Infectados')) +
-  geom_line(aes(x=t, y=total_recovered, color='Recuperados')) +
+  geom_line(aes(x=t, y=total_deads, color='Muertes acumuladas')) +
   xlab('Tiempo (s)') +
   ylab('Personas') +
   labs(title = 'Modelo SIR')
