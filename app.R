@@ -57,20 +57,20 @@ html, body {
 }
 
 .return-button {
-    display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    background-color: #00cbcc;
-    border: none;
-    border-radius: 5px;
-    color: #023d54;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    display: block !important;
+    margin: 20px auto !important;
+    padding: 10px 20px !important;
+    background-color: #00cbcc !important;
+    border: none !important;
+    border-radius: 5px !important;
+    color: #023d54 !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    font-size: 1.5rem !important;
 }
 .return-button:hover {
-    background-color: #00b2b2;
+    background-color: #00b2b2 !important;
 }
 
 .subtitulo {
@@ -194,18 +194,24 @@ server <- function(input, output, session) {
         class = "author-row",
         div(
           class = "author-card",
-          img(src = "jp.jpg", alt = "JP"),
-          p("Juan Pablo Guerrero Escudero")
+          img(src = "jp.jpg", alt = "Juan Pablo"),
+          p("Juan Pablo Guerrero Escudero"),
+          p(style="font-weight: normal;", "A01706810"),
+          p(style="font-weight: normal;", "Campus Querétaro")
         ),
         div(
           class = "author-card",
-          img(src = "romi.jpg", alt = "Romi"),
-          p("Romina Nájera Fuentes")
+          img(src = "romi.jpg", alt = "Romina"),
+          p("Romina Nájera Fuentes"),
+          p(style="font-weight: normal;", "A01424411"),
+          p(style="font-weight: normal;", "Campus Querétaro")
         ),
         div(
           class = "author-card",
-          img(src = "brau.jpg", alt = "Brau"),
-          p("Juan Braulio Olivares Rodríguez")
+          img(src = "brau.jpg", alt = "Braulio"),
+          p("Juan Braulio Olivares Rodríguez"),
+          p(style="font-weight: normal;", "A01706880"),
+          p(style="font-weight: normal;", "Campus Querétaro")
         )
       ),
       div(
@@ -272,18 +278,24 @@ server <- function(input, output, session) {
             class = "author-row",
             div(
               class = "author-card",
-              img(src = "jp.jpg", alt = "JP"),
-              p("Juan Pablo Guerrero Escudero")
+              img(src = "jp.jpg", alt = "Juan Pablo"),
+              p("Juan Pablo Guerrero Escudero"),
+              p(style="font-weight: normal;", "A01706810"),
+              p(style="font-weight: normal;", "Campus Querétaro")
             ),
             div(
               class = "author-card",
-              img(src = "romi.jpg", alt = "Romi"),
-              p("Romina Nájera Fuentes")
+              img(src = "romi.jpg", alt = "Romina"),
+              p("Romina Nájera Fuentes"),
+              p(style="font-weight: normal;", "A01424411"),
+              p(style="font-weight: normal;", "Campus Querétaro")
             ),
             div(
               class = "author-card",
-              img(src = "brau.jpg", alt = "Brau"),
-              p("Juan Braulio Olivares Rodríguez")
+              img(src = "brau.jpg", alt = "Braulio"),
+              p("Juan Braulio Olivares Rodríguez"),
+              p(style="font-weight: normal;", "A01706880"),
+              p(style="font-weight: normal;", "Campus Querétaro")
             )
           ),
           div(
