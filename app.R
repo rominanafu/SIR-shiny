@@ -131,13 +131,23 @@ html, body {
     font-size: 18px; /* Tamaño del icono */
 }
 
-
 "})
 
 # UI
 ui <- fluidPage(
   useShinyjs(),
   tags$head(tags$style(customCSS)),
+  
+  withMathJax(),
+  tags$style(HTML(
+    "p.eqtext div.MathJax_Display{color: white;
+    font-size: 1.5rem;
+    padding-bottom: 5px;
+    padding-top: 10px;}",
+    "p.mjleft div.MathJax_Display{text-align: left !important;}",
+    "p.eqcenter div.MathJax_Display{text-align: center !important;}"
+  )),
+  
   uiOutput("main_ui")
 )
 
@@ -358,14 +368,17 @@ server <- function(input, output, session) {
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 5px;
             padding-top: 10px;",
-            "El modelo divide a la población en tres grupos: los susceptibles (S), 
+            withMathJax(),
+            tags$p(
+              "El modelo divide a la población en tres grupos: los susceptibles (S), 
             los infectados (I) y los recuperados (R). Los parámetros clave son la 
-            tasa de transmisión () y la tasa de recuperación (), de los cuales 
-            se deriva el número reproductivo básico (), una medida crítica 
+            tasa de transmisión (\\(\\gamma\\)) y la tasa de recuperación (\\(\\beta\\)), de los cuales 
+            se deriva el número reproductivo básico (\\(R_0\\)), una medida crítica 
             para determinar si una enfermedad puede generar un brote. Además de 
             su aplicación en epidemiología, el modelo SIR también se utiliza en 
             áreas como redes sociales, marketing viral y ciberseguridad, para estudiar 
-            la propagación de ideas, productos o virus informáticos."
+            la propagación de ideas, productos o virus informáticos.", class = "eqtext"
+            )
           ),
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 5px;
@@ -374,7 +387,7 @@ server <- function(input, output, session) {
             como un periodo de latencia en los modelos SEIR o inmunidad temporal 
             en los modelos SIRS. Estas extensiones lo hacen adaptable a diversos 
             escenarios reales, como se demuestra en su aplicación para analizar 
-            brotes históricos y recientes, incluyendo la pandemia de COVID-19."
+            brotes históricos y recientes, incluyendo la pandemia de COVID-19.",
           ),
           div(
             actionButton(
@@ -465,14 +478,12 @@ server <- function(input, output, session) {
                       div(
                         class = "info-section",
                         style = "color: #ffffff;",
-                        p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
-                          sit amet fermentum libero condimentum id. Aliquam quis erat at
-                          lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
-                          ac ante ipsum primis in faucibus. Phasellus feugiat rhoncus quam in dictum.
-                          Aliquam orci nulla, pulvinar ac mollis et, pellentesque ac lectus.
-                          Phasellus egestas ipsum a massa porta fermentum quis at dolor. In
-                          sit amet enim sed ex vulputate blandit a at tellus. Nam tempus diam
-                          eget est auctor dictum. Integer ac molestie risus."),
+                        withMathJax(),
+                        p("El modelo más simple del SIR puede ser simplificado con distintas 
+                          simplificaciones, por ejemplo, que tiene una tasa de infección constante 
+                          y que no hay un cambio total en la población, por lo que puede ser 
+                          modelado con las siguientes ecuaciones:"),
+                        tags$p("$$\\frac{dS}{dt}=-\\beta\\frac{S}{N}$$",class = "eqcenter"),
                         p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
                           sit amet fermentum libero condimentum id. Aliquam quis erat at
                           lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
