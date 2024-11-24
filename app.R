@@ -483,14 +483,26 @@ server <- function(input, output, session) {
                                de enfermedades infecciosas al asumir una población cerrada donde todos 
                                los individuos interactúan de la misma manera. Divide a la población 
                                entre Susceptibles (S), Infectados (I) y Removidos (R). Las siguientes 
-                               simplificaciones son utilizadas: Los individuos de la población interactúan 
-                               de manera uniforme, lo que permite calcular la tasa de nuevos contagios 
-                               igual a \\(\\beta S \\frac{I}{N}\\), donde \\(\\boldsymbol{\\beta}\\) es la tasa de 
-                               transmisión y \\(\\textbf{N}\\) el tamaño total de la población; hay una recuperación 
-                               constante a una tasa \\(\\boldsymbol{\\gamma} \\), y los recuperados no pueden volver 
-                               a infectarse ni transmitir la enfermedad; finalmente, se considera una 
-                               tasa de mortalidad \\(\\boldsymbol{\\mu} \\) que es igual a la tasa de nacimientos, 
-                               por lo que la población se mantiene constante en todo momento. En este modelo, 
+                               simplificaciones son utilizadas:",
+                               class = "eqtext"),
+                        tags$ul(
+                          tags$li("Los individuos de la población interactúan 
+                                 de manera uniforme, lo que permite calcular la tasa de nuevos contagios 
+                                 igual a \\(\\beta S \\frac{I}{N}\\), donde \\(\\boldsymbol{\\beta}\\) es la tasa de 
+                                 transmisión y \\(\\textbf{N}\\) el tamaño total de la población",
+                                 class = "eqtext"),
+                          tags$li("Hay una recuperación 
+                                 constante a una tasa \\(\\boldsymbol{\\gamma} \\)",
+                                 class = "eqtext"),
+                          tags$li("Los recuperados no pueden volver 
+                                 a infectarse ni transmitir la enfermedad",
+                                 class = "eqtext"),
+                          tags$li("Se considera una 
+                                 tasa de mortalidad \\(\\boldsymbol{\\mu} \\) que es igual a la tasa de nacimientos, 
+                                 por lo que la población se mantiene constante en todo momento",
+                                 class = "eqtext")
+                        ),
+                        tags$p("En este modelo, 
                                el número reproductivo básico \\(R_0\\) puede ser escrito en términos de los 
                                otros parámetros de la siguiente forma \\(R_0=\\frac{\\beta}{\\gamma}\\).",
                                class = "eqtext")
@@ -777,11 +789,19 @@ server <- function(input, output, session) {
                                el modelado con ecuaciones diferenciales con la diferencia en que este 
                                es un modelo estocástico, por lo que las mismas condiciones iniciales 
                                pueden llevar a resultados finales distintos. Para este modelado, 
-                               requerimos definir una probabilidad de infección \\(p_i\\)que tendrá cada persona 
-                               en el grupo de Susceptibles (S), y una probabilidad de recuperación \\(p_r\\)que 
-                               tendrá una persona Infectada (I), así, en cada día se utilizan variables 
+                               requerimos definir:",
+                               class = "eqtext"),
+                        tags$ul(
+                          tags$li("Una probabilidad de infección \\(p_i\\)que tendrá cada persona 
+                                   en el grupo de Susceptibles (S)",
+                                  class = "eqtext"),
+                          tags$li("Una probabilidad de recuperación \\(p_r\\)que 
+                                   tendrá una persona Infectada (I)",
+                                  class = "eqtext")
+                        ),
+                        tags$p("Así, en cada día se utilizan variables 
                                aleatorias binomiales para calcular el nuevo número de infectados y el 
-                               nuevo número de recuperados, actualizando cada uno de éstos grupos.",
+                               nuevo número de recuperados, actualizando cada uno de estos grupos.",
                                class = "eqtext")
                         #tags$p("$$$$",class = "eqcenter")
                       ),
@@ -903,20 +923,35 @@ server <- function(input, output, session) {
                         tags$p("Con el uso de variables estocásticas podemos agregar mayor número de 
                                parámetros con los que modelar la evolución de la pandemia, agregando 
                                nuevos grupos dentro de la población y usando probabilidades para modelar 
-                               los cambios dentro de éstos. En nuestro caso, decidimos utilizar los 
-                               siguientes grupos: Susceptibles (S), son las personas que no tienen la 
-                               enfermedad y pueden contraerla; Expuestos o en proceso de incubación (E), 
-                               las personas que contrajeron el virus pero siguen en la etapa de incubación 
-                               y por lo tanto no han mostrado síntomas de la enfermedad; Infectados 
-                               Sintomáticos (\\(I_s\\)), las personas con el virus que muestran síntomas de la 
-                               enfermedad; Infectados Asintomáticos (\\(I_a\\)), personas que a pesar de tener el 
-                               virus no muestran síntomas y por lo tanto pueden no darse cuenta de que la 
-                               han contraído; Cuarentena (Q), personas que al mostrar síntomas deciden 
-                               aislarse de la población para no contagiar más personas; Recuperados (R), 
-                               personas que han sobrevivido a la enfermedad y tienen una inmunidad temporal; 
-                               Muertos (D), personas que después de contraer la enfermedad no han 
-                               sobrevivido a ella.",
+                               los cambios dentro de estos. En nuestro caso, decidimos utilizar los 
+                               siguientes grupos:",
                                class = "eqtext"),
+                        tags$ul(
+                          tags$li("Susceptibles (S), son las personas que no tienen la 
+                               enfermedad y pueden contraerla",
+                                  class = "eqtext"),
+                          tags$li("Expuestos o en proceso de incubación (E), 
+                               las personas que contrajeron el virus pero siguen en la etapa de incubación 
+                               y por lo tanto no han mostrado síntomas de la enfermedad",
+                                  class = "eqtext"),
+                          tags$li("Infectados 
+                               Sintomáticos (\\(I_S\\)), las personas con el virus que muestran síntomas de la 
+                               enfermedad",
+                                  class = "eqtext"),
+                          tags$li("Infectados Asintomáticos (\\(I_A\\)), personas que a pesar de tener el 
+                               virus no muestran síntomas y por lo tanto pueden no darse cuenta de que la 
+                               han contraído",
+                                  class = "eqtext"),
+                          tags$li("Cuarentena (Q), personas que al mostrar síntomas deciden 
+                               aislarse de la población para no contagiar más personas",
+                                  class = "eqtext"),
+                          tags$li("Recuperados (R), 
+                               personas que han sobrevivido a la enfermedad y tienen una inmunidad temporal ",
+                                  class = "eqtext"),
+                          tags$li("Muertos (D), personas que después de contraer la enfermedad no han 
+                               sobrevivido a ella",
+                                  class = "eqtext")
+                        )
                         #tags$p("$$$$",class = "eqcenter")
                       ),
                       
@@ -1049,7 +1084,7 @@ server <- function(input, output, session) {
               
               ##################################################################
               tabItem( # pros-contras de edos y vars
-                       # imagenes de comparacion sir simple entre edos y vars
+                # imagenes de comparacion sir simple entre edos y vars
                 tabName = "comp"
               )
               
@@ -1135,15 +1170,15 @@ server <- function(input, output, session) {
       
     }
   })
-
+  
   # Página con tarjetas
   observeEvent(input$back_to_main, {
     output$main_ui <- renderUI({
       div(
-
+        
         h1("Dashboard del Modelo SIR", style = "text-align: center;
            color: #00cbcc; margin-top: 20px;"),
-
+        
         div(
           class = "cards-container",
           
@@ -1182,7 +1217,7 @@ server <- function(input, output, session) {
               p("")
           )
         )
-
+        
       )
     })
   })
