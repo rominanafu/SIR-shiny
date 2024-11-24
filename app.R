@@ -168,33 +168,34 @@ server <- function(input, output, session) {
       div(
         style = "color: white; font-size: 1.5rem; padding-top: 20px;
         padding-bottom: 20px;",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie
-        laoreet purus, ac lacinia arcu fermentum non. Sed suscipit erat mi.
-        Nulla nec quam sed metus gravida placerat. Ut maximus orci ac quam
-        pellentesque tristique. Aenean vitae euismod ligula, vitae sollicitudin
-        erat. Sed sit amet lectus feugiat, placerat nulla ut, varius risus.
-        Quisque quis gravida lectus. Nulla lobortis mattis mauris, at condimentum
-        odio luctus quis. Integer vel odio ex. Orci varius natoque penatibus et
-        magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id
-        sodales justo. Aenean vitae gravida justo. Mauris ut posuere odio, sit
-        amet accumsan quam. Mauris ultrices, odio vitae facilisis blandit, risus
-        felis accumsan nulla, in imperdiet erat nulla in diam. Pellentesque
-        pellentesque orci a mi sollicitudin porta."
+        "La modelación matemática de enfermedades infecciosas es una herramienta 
+        fundamental para comprender, predecir y controlar la propagación de epidemias. 
+        Desde los primeros modelos simples hasta enfoques más complejos, estas 
+        herramientas permiten analizar dinámicas de transmisión, evaluar estrategias 
+        de intervención y anticipar el impacto de decisiones en salud pública. 
+        Durante la pandemia de COVID-19, los modelos matemáticos demostraron su 
+        importancia al guiar políticas de distanciamiento social, campañas de 
+        vacunación y otras medidas preventivas."
       ),
       div(
         style = "color: white; font-size: 1.5rem; padding-bottom: 30px;",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie
-        laoreet purus, ac lacinia arcu fermentum non. Sed suscipit erat mi.
-        Nulla nec quam sed metus gravida placerat. Ut maximus orci ac quam
-        pellentesque tristique. Aenean vitae euismod ligula, vitae sollicitudin
-        erat. Sed sit amet lectus feugiat, placerat nulla ut, varius risus.
-        Quisque quis gravida lectus. Nulla lobortis mattis mauris, at condimentum
-        odio luctus quis. Integer vel odio ex. Orci varius natoque penatibus et
-        magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id
-        sodales justo. Aenean vitae gravida justo. Mauris ut posuere odio, sit
-        amet accumsan quam. Mauris ultrices, odio vitae facilisis blandit, risus
-        felis accumsan nulla, in imperdiet erat nulla in diam. Pellentesque
-        pellentesque orci a mi sollicitudin porta."
+        "Los modelos clásicos, como el SIR, proporcionan una base sólida para explorar 
+        la evolución de enfermedades en una población, mientras que las extensiones, 
+        como la inclusión de vacunación o el uso de variables aleatorias, permiten 
+        ajustar los análisis a escenarios más realistas. Por otro lado, los modelos 
+        estocásticos y aquellos con múltiples categorías introducen un nivel adicional 
+        de complejidad que refleja mejor la incertidumbre inherente y las variaciones 
+        en las interacciones humanas, la inmunidad y la respuesta a las intervenciones."
+      ),
+      div(
+        style = "color: white; font-size: 1.5rem; padding-bottom: 30px;",
+        "En esta página, presentamos diferentes enfoques para modelar la pandemia, 
+        desde el clásico modelo SIR hasta variantes más avanzadas que incluyen 
+        vacunación, elementos aleatorios y modelos estocásticos con mayor nivel de 
+        detalle. Estos enfoques destacan cómo la evolución de los modelos matemáticos 
+        mejora nuestra capacidad para interpretar datos y diseñar respuestas más 
+        efectivas ante enfermedades infecciosas, asegurando que los recursos y 
+        esfuerzos se destinen de manera eficiente."
       ),
       div(
         class="subtitulo",
@@ -252,33 +253,34 @@ server <- function(input, output, session) {
           div(
             style = "color: white; font-size: 1.5rem; padding-top: 20px;
         padding-bottom: 20px;",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie
-        laoreet purus, ac lacinia arcu fermentum non. Sed suscipit erat mi.
-        Nulla nec quam sed metus gravida placerat. Ut maximus orci ac quam
-        pellentesque tristique. Aenean vitae euismod ligula, vitae sollicitudin
-        erat. Sed sit amet lectus feugiat, placerat nulla ut, varius risus.
-        Quisque quis gravida lectus. Nulla lobortis mattis mauris, at condimentum
-        odio luctus quis. Integer vel odio ex. Orci varius natoque penatibus et
-        magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id
-        sodales justo. Aenean vitae gravida justo. Mauris ut posuere odio, sit
-        amet accumsan quam. Mauris ultrices, odio vitae facilisis blandit, risus
-        felis accumsan nulla, in imperdiet erat nulla in diam. Pellentesque
-        pellentesque orci a mi sollicitudin porta."
+            "La modelación matemática de enfermedades infecciosas es una herramienta 
+        fundamental para comprender, predecir y controlar la propagación de epidemias. 
+        Desde los primeros modelos simples hasta enfoques más complejos, estas 
+        herramientas permiten analizar dinámicas de transmisión, evaluar estrategias 
+        de intervención y anticipar el impacto de decisiones en salud pública. 
+        Durante la pandemia de COVID-19, los modelos matemáticos demostraron su 
+        importancia al guiar políticas de distanciamiento social, campañas de 
+        vacunación y otras medidas preventivas."
           ),
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 30px;",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie
-        laoreet purus, ac lacinia arcu fermentum non. Sed suscipit erat mi.
-        Nulla nec quam sed metus gravida placerat. Ut maximus orci ac quam
-        pellentesque tristique. Aenean vitae euismod ligula, vitae sollicitudin
-        erat. Sed sit amet lectus feugiat, placerat nulla ut, varius risus.
-        Quisque quis gravida lectus. Nulla lobortis mattis mauris, at condimentum
-        odio luctus quis. Integer vel odio ex. Orci varius natoque penatibus et
-        magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id
-        sodales justo. Aenean vitae gravida justo. Mauris ut posuere odio, sit
-        amet accumsan quam. Mauris ultrices, odio vitae facilisis blandit, risus
-        felis accumsan nulla, in imperdiet erat nulla in diam. Pellentesque
-        pellentesque orci a mi sollicitudin porta."
+            "Los modelos clásicos, como el SIR, proporcionan una base sólida para explorar 
+        la evolución de enfermedades en una población, mientras que las extensiones, 
+        como la inclusión de vacunación o el uso de variables aleatorias, permiten 
+        ajustar los análisis a escenarios más realistas. Por otro lado, los modelos 
+        estocásticos y aquellos con múltiples categorías introducen un nivel adicional 
+        de complejidad que refleja mejor la incertidumbre inherente y las variaciones 
+        en las interacciones humanas, la inmunidad y la respuesta a las intervenciones."
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 30px;",
+            "En esta página, presentamos diferentes enfoques para modelar la pandemia, 
+        desde el clásico modelo SIR hasta variantes más avanzadas que incluyen 
+        vacunación, elementos aleatorios y modelos estocásticos con mayor nivel de 
+        detalle. Estos enfoques destacan cómo la evolución de los modelos matemáticos 
+        mejora nuestra capacidad para interpretar datos y diseñar respuestas más 
+        efectivas ante enfermedades infecciosas, asegurando que los recursos y 
+        esfuerzos se destinen de manera eficiente."
           ),
           div(
             class="subtitulo",
