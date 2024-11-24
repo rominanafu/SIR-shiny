@@ -78,5 +78,3 @@ interactive_plot = girafe_options(
   opts_toolbar(saveaspng = FALSE)
 )
 
-#Mostrar gráfico interactivo
-interactive_plot
