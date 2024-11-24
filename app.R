@@ -769,22 +769,21 @@ server <- function(input, output, session) {
                       div(
                         class = "info-section",
                         style = "color: #ffffff;",
-                        p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
-                          sit amet fermentum libero condimentum id. Aliquam quis erat at
-                          lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
-                          ac ante ipsum primis in faucibus. Phasellus feugiat rhoncus quam in dictum.
-                          Aliquam orci nulla, pulvinar ac mollis et, pellentesque ac lectus.
-                          Phasellus egestas ipsum a massa porta fermentum quis at dolor. In
-                          sit amet enim sed ex vulputate blandit a at tellus. Nam tempus diam
-                          eget est auctor dictum. Integer ac molestie risus."),
-                        p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
-                          sit amet fermentum libero condimentum id. Aliquam quis erat at
-                          lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
-                          ac ante ipsum primis in faucibus. Phasellus feugiat rhoncus quam in dictum.
-                          Aliquam orci nulla, pulvinar ac mollis et, pellentesque ac lectus.
-                          Phasellus egestas ipsum a massa porta fermentum quis at dolor. In
-                          sit amet enim sed ex vulputate blandit a at tellus. Nam tempus diam
-                          eget est auctor dictum. Integer ac molestie risus.")
+                        withMathJax(),
+                        tags$p("Pueden hacerse modificaciones al modelo SIR para agregar incertidumbre 
+                               con el uso de variables aleatorias, en este caso, se utilizan variables 
+                               aleatorias de Bernoulli para saber si una personan contrajo o no la 
+                               enfermedad. En este modelo se hacen las mismas simplificaciones que en 
+                               el modelado con ecuaciones diferenciales con la diferencia en que este 
+                               es un modelo estocástico, por lo que las mismas condiciones iniciales 
+                               pueden llevar a resultados finales distintos. Para este modelado, 
+                               requerimos definir una probabilidad de infección \\(p_i\\)que tendrá cada persona 
+                               en el grupo de Susceptibles (S), y una probabilidad de recuperación \\(p_r\\)que 
+                               tendrá una persona Infectada (I), así, en cada día se utilizan variables 
+                               aleatorias binomiales para calcular el nuevo número de infectados y el 
+                               nuevo número de recuperados, actualizando cada uno de éstos grupos.",
+                               class = "eqtext")
+                        #tags$p("$$$$",class = "eqcenter")
                       ),
                       
                       # Parámetros
@@ -833,18 +832,8 @@ server <- function(input, output, session) {
                     div(
                       class = "info-section",
                       style = "color: #ffffff; margin-top: 20px; margin-bottom: 20px;",
-                      p("Duis ut nulla id tellus sodales tempor in sit amet risus.
-                          Fusce ac pulvinar ipsum, id commodo risus. Nunc rutrum mi ipsum,
-                          ac faucibus elit dapibus vitae. Integer est enim, finibus ac pretium in,
-                          ullamcorper vel est. Nulla in est quis arcu maximus dictum et non metus.
-                          Donec tempor suscipit risus. Quisque accumsan, tortor eu sagittis
-                          tincidunt, lacus leo suscipit nisl, id lobortis nulla sapien nec nulla.
-                          Vestibulum faucibus vel dui nec dignissim. Etiam aliquam egestas justo,
-                          nec egestas nunc. Fusce faucibus egestas tempor. Morbi faucibus augue
-                          varius tincidunt pretium. Aliquam tempor, tellus non fringilla viverra,
-                          turpis nibh fringilla massa, sit amet congue ex neque posuere risus.
-                          Aliquam dignissim ex et purus mattis imperdiet. Integer mauris risus,
-                          porta nec pulvinar sit amet, viverra sit amet ex.")
+                      p("Todas estas interacciones pueden ser visualizadas con el siguiente 
+                        diagrama:")
                     ),
                     
                     div(
@@ -910,22 +899,25 @@ server <- function(input, output, session) {
                       div(
                         class = "info-section",
                         style = "color: #ffffff;",
-                        p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
-                          sit amet fermentum libero condimentum id. Aliquam quis erat at
-                          lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
-                          ac ante ipsum primis in faucibus. Phasellus feugiat rhoncus quam in dictum.
-                          Aliquam orci nulla, pulvinar ac mollis et, pellentesque ac lectus.
-                          Phasellus egestas ipsum a massa porta fermentum quis at dolor. In
-                          sit amet enim sed ex vulputate blandit a at tellus. Nam tempus diam
-                          eget est auctor dictum. Integer ac molestie risus."),
-                        p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
-                          sit amet fermentum libero condimentum id. Aliquam quis erat at
-                          lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
-                          ac ante ipsum primis in faucibus. Phasellus feugiat rhoncus quam in dictum.
-                          Aliquam orci nulla, pulvinar ac mollis et, pellentesque ac lectus.
-                          Phasellus egestas ipsum a massa porta fermentum quis at dolor. In
-                          sit amet enim sed ex vulputate blandit a at tellus. Nam tempus diam
-                          eget est auctor dictum. Integer ac molestie risus.")
+                        withMathJax(),
+                        tags$p("Con el uso de variables estocásticas podemos agregar mayor número de 
+                               parámetros con los que modelar la evolución de la pandemia, agregando 
+                               nuevos grupos dentro de la población y usando probabilidades para modelar 
+                               los cambios dentro de éstos. En nuestro caso, decidimos utilizar los 
+                               siguientes grupos: Susceptibles (S), son las personas que no tienen la 
+                               enfermedad y pueden contraerla; Expuestos o en proceso de incubación (E), 
+                               las personas que contrajeron el virus pero siguen en la etapa de incubación 
+                               y por lo tanto no han mostrado síntomas de la enfermedad; Infectados 
+                               Sintomáticos (\\(I_s\\)), las personas con el virus que muestran síntomas de la 
+                               enfermedad; Infectados Asintomáticos (\\(I_a\\)), personas que a pesar de tener el 
+                               virus no muestran síntomas y por lo tanto pueden no darse cuenta de que la 
+                               han contraído; Cuarentena (Q), personas que al mostrar síntomas deciden 
+                               aislarse de la población para no contagiar más personas; Recuperados (R), 
+                               personas que han sobrevivido a la enfermedad y tienen una inmunidad temporal; 
+                               Muertos (D), personas que después de contraer la enfermedad no han 
+                               sobrevivido a ella.",
+                               class = "eqtext"),
+                        #tags$p("$$$$",class = "eqcenter")
                       ),
                       
                       # Parámetros
