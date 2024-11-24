@@ -277,7 +277,7 @@ server <- function(input, output, session) {
             ),
             div(
               class = "author-card",
-              img(src = "romi2.jpg", alt = "Romi"),
+              img(src = "romi.jpg", alt = "Romi"),
               p("Romina Nájera Fuentes")
             ),
             div(
