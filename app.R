@@ -300,8 +300,61 @@ server <- function(input, output, session) {
     else if (input$page$id == "info") { # Antecedentes
       
       output$main_ui <- renderUI({
-        div(
-          p("próximamente")
+        fluidPage(
+          div(
+            class = "image-banner",
+            style = "background-image: url(https://observatorio.tec.mx/wp-content/uploads/2024/04/ChatGPT-como-fuente-de-informacion-preliminar-en-la-investigacion-dirigida.jpg);",
+            div(class = "banner-title", "Antecedentes")
+          ),
+          div(
+            class="subtitulo",
+            style = "margin-top: 20px;",
+            "COVID-19"
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 30px;
+            padding-top: 10px;",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie
+        laoreet purus, ac lacinia arcu fermentum non. Sed suscipit erat mi.
+        Nulla nec quam sed metus gravida placerat. Ut maximus orci ac quam
+        pellentesque tristique. Aenean vitae euismod ligula, vitae sollicitudin
+        erat. Sed sit amet lectus feugiat, placerat nulla ut, varius risus.
+        Quisque quis gravida lectus. Nulla lobortis mattis mauris, at condimentum
+        odio luctus quis. Integer vel odio ex. Orci varius natoque penatibus et
+        magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id
+        sodales justo. Aenean vitae gravida justo. Mauris ut posuere odio, sit
+        amet accumsan quam. Mauris ultrices, odio vitae facilisis blandit, risus
+        felis accumsan nulla, in imperdiet erat nulla in diam. Pellentesque
+        pellentesque orci a mi sollicitudin porta."
+          ),
+          div(
+            class="subtitulo",
+            style = "margin-top: 10px;",
+            "Modelo SIR"
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 5px;
+            padding-top: 10px;",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie
+        laoreet purus, ac lacinia arcu fermentum non. Sed suscipit erat mi.
+        Nulla nec quam sed metus gravida placerat. Ut maximus orci ac quam
+        pellentesque tristique. Aenean vitae euismod ligula, vitae sollicitudin
+        erat. Sed sit amet lectus feugiat, placerat nulla ut, varius risus.
+        Quisque quis gravida lectus. Nulla lobortis mattis mauris, at condimentum
+        odio luctus quis. Integer vel odio ex. Orci varius natoque penatibus et
+        magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id
+        sodales justo. Aenean vitae gravida justo. Mauris ut posuere odio, sit
+        amet accumsan quam. Mauris ultrices, odio vitae facilisis blandit, risus
+        felis accumsan nulla, in imperdiet erat nulla in diam. Pellentesque
+        pellentesque orci a mi sollicitudin porta."
+          ),
+          div(
+            actionButton(
+              inputId = "back_to_main",
+              label = "Regresar",
+              class = "return-button"
+            )
+          )
         )
       })
       
@@ -963,8 +1016,8 @@ server <- function(input, output, session) {
               ),
               
               ##################################################################
-              tabItem( # aqui podemos poner imagenes y/o una tabla que nos sirva
-                       # para comparar entre edos y variables aleatorias
+              tabItem( # pros-contras de edos y vars
+                       # imagenes de comparacion sir simple entre edos y vars
                 tabName = "comp"
               )
               
@@ -1023,8 +1076,28 @@ server <- function(input, output, session) {
     else if (input$page$id == "ref") { # Referencias
       
       output$main_ui <- renderUI({
-        div(
-          p("próximamente")
+        fluidPage(
+          div(
+            class = "image-banner",
+            style = "background-image: url(https://tesisdoctoralesonline.com/wp-content/uploads/2021/11/header_bibliografia-trabajo-universitario.jpg);",
+            div(class = "banner-title", "Referencias")
+          ),
+          div(style="height: 20px;"),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            "Referencia 1"
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            "Referencia 2"
+          ),
+          div(
+            actionButton(
+              inputId = "back_to_main",
+              label = "Regresar",
+              class = "return-button"
+            )
+          )
         )
       })
       
@@ -1080,13 +1153,6 @@ server <- function(input, output, session) {
 
       )
     })
-  })
-  
-  # output$plot1 <- renderPlot({
-  #   plot(1:10, 1:10, col = "blue", main = "Gráfica 1")
-  # })
-  output$plot2 <- renderPlot({
-    hist(rnorm(100), col = "red", main = "Gráfica 2")
   })
   
 }
