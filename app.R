@@ -479,19 +479,19 @@ server <- function(input, output, session) {
                         class = "info-section",
                         style = "color: #ffffff;",
                         withMathJax(),
-                        p("El modelo más simple del SIR puede ser simplificado con distintas 
-                          simplificaciones, por ejemplo, que tiene una tasa de infección constante 
-                          y que no hay un cambio total en la población, por lo que puede ser 
-                          modelado con las siguientes ecuaciones:"),
-                        tags$p("$$\\frac{dS}{dt}=-\\beta\\frac{S}{N}$$",class = "eqcenter"),
-                        p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
-                          sit amet fermentum libero condimentum id. Aliquam quis erat at
-                          lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
-                          ac ante ipsum primis in faucibus. Phasellus feugiat rhoncus quam in dictum.
-                          Aliquam orci nulla, pulvinar ac mollis et, pellentesque ac lectus.
-                          Phasellus egestas ipsum a massa porta fermentum quis at dolor. In
-                          sit amet enim sed ex vulputate blandit a at tellus. Nam tempus diam
-                          eget est auctor dictum. Integer ac molestie risus.")
+                        tags$p("El modelo más simple de SIR simplifica la dinámica de transmisión 
+                               de enfermedades infecciosas al asumir una población cerrada donde todos 
+                               los individuos interactúan de la misma manera. Divide a la población 
+                               entre Susceptibles (S), Infectados (I) y Removidos (R). Las siguientes 
+                               simplificaciones son utilizadas: Los individuos de la población interactúan 
+                               de manera uniforme, lo que permite calcular la tasa de nuevos contagios 
+                               igual a \\(\\beta S \\frac{I}{N}\\), donde \\(\\boldsymbol{\\beta}\\) es la tasa de 
+                               transmisión y \\(\\textbf{N}\\) el tamaño total de la población; hay una recuperación 
+                               constante a una tasa \\(\\boldsymbol{\\gamma} \\), y los recuperados no pueden volver 
+                               a infectarse ni transmitir la enfermedad; finalmente, se considera una 
+                               tasa de mortalidad \\(\\boldsymbol{\\mu} \\) que es igual a la tasa de nacimientos, 
+                               por lo que la población se mantiene constante en todo momento.",
+                               class = "eqtext")
                       ),
                       
                       # Parámetros
@@ -540,18 +540,17 @@ server <- function(input, output, session) {
                     div(
                       class = "info-section",
                       style = "color: #ffffff; margin-top: 20px; margin-bottom: 20px;",
-                      p("Duis ut nulla id tellus sodales tempor in sit amet risus.
-                          Fusce ac pulvinar ipsum, id commodo risus. Nunc rutrum mi ipsum,
-                          ac faucibus elit dapibus vitae. Integer est enim, finibus ac pretium in,
-                          ullamcorper vel est. Nulla in est quis arcu maximus dictum et non metus.
-                          Donec tempor suscipit risus. Quisque accumsan, tortor eu sagittis
-                          tincidunt, lacus leo suscipit nisl, id lobortis nulla sapien nec nulla.
-                          Vestibulum faucibus vel dui nec dignissim. Etiam aliquam egestas justo,
-                          nec egestas nunc. Fusce faucibus egestas tempor. Morbi faucibus augue
-                          varius tincidunt pretium. Aliquam tempor, tellus non fringilla viverra,
-                          turpis nibh fringilla massa, sit amet congue ex neque posuere risus.
-                          Aliquam dignissim ex et purus mattis imperdiet. Integer mauris risus,
-                          porta nec pulvinar sit amet, viverra sit amet ex.")
+                      withMathJax(),
+                      tags$p("Todas estas simplificaciones permiten modelar las interacciones 
+                             entre los distintos grupos mediante las siguientes ecuaciones:",
+                             class = "eqtext"),
+                      tags$p("$$\\frac{dS}{dt}=\\mu N - \\beta I \\frac{S}{N} - \\mu S\\\\
+                             \\frac{dI}{dt}=\\beta I \\frac{S}{N} - \\gamma I - \\mu I \\\\
+                             \\frac{dR}{dt}=\\gamma I - \\mu R$$"
+                             ,class = "eqcenter"),
+                      tags$p("Estas ecuaciones pueden también ser representadas con el 
+                             siguiente diagrama:",
+                             class = "eqtext")
                     ),
                     
                     div(
