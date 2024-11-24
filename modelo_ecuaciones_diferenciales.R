@@ -11,10 +11,11 @@ diff_eq.sol <- function(t, state, parms) {
   with(as.list(state), 
        {
          dxdt = rep(0, length(state))
-         dxdt[1] = parms$mu*N - parms$beta*I*S/N - parms$mu*S - parms$mu*N*parms$p #- mu*N*p para vacunación
+         dxdt[1] = parms$mu*N - parms$beta*I*S/N - parms$mu*S - parms$u
          dxdt[2] = parms$beta*I*S/N - parms$gamma*I - parms$mu*I
-         dxdt[3] = parms$gamma*I - parms$mu*R + parms$mu*N*parms$p # + mu*N*p para vacunación
-         dxdt[4] = dxdt[1] + dxdt[2] + dxdt[3]
+         dxdt[3] = parms$gamma*I - parms$mu*R
+         dxdt[4] = parms$u - parms$u * V
+         dxdt[5] = dxdt[1] + dxdt[2] + dxdt[3] + dxdt[4] 
          return(list(dxdt))
        })
 }
@@ -23,19 +24,21 @@ diff_eq.sol <- function(t, state, parms) {
 mu = 0.001 
 beta = 0.5 
 gamma = 0.04
-p = 0.7
+p = 0.8
+u = 1
 
 #Condiciones iniciales
 S = 997 
 I = 3
 R = 0 
-N = S + I + R 
+V = 0
+N = S + I + R + V
 t_max = 30
 
 #Solución ecuación diferencial usando ode()
 t = seq(0, t_max, 0.1)
-init = c(S = S, I = I, R = R, N = N)
-params = data.frame(mu = mu, beta = beta, gamma = gamma, p = p)
+init = c(S = S, I = I, R = R, U = U, N = N)
+params = data.frame(mu = mu, beta = beta, gamma = gamma, u = u)
 
 Output = ode(y = init, times = t, func = diff_eq.sol, parms = params)
 
@@ -44,10 +47,11 @@ solution = data.frame(time = Output[, 1],
                       susceptibles = Output[, 2],
                       infectados = Output[, 3], 
                       recuperados = Output[, 4], 
-                      poblacion = Output[, 5])
+                      vacunados = Output[, 5], 
+                      poblacion = Output[, 6])
 
 #reformatear los datos en formato largo para uso en ggplot
-solution_long = pivot_longer(solution, cols = c(susceptibles, infectados, recuperados, poblacion), 
+solution_long = pivot_longer(solution, cols = c(susceptibles, infectados, recuperados, vacunados, poblacion), 
                              names_to = 'variable', 
                              values_to = 'value')
 
