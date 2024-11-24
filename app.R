@@ -490,7 +490,9 @@ server <- function(input, output, session) {
                                constante a una tasa \\(\\boldsymbol{\\gamma} \\), y los recuperados no pueden volver 
                                a infectarse ni transmitir la enfermedad; finalmente, se considera una 
                                tasa de mortalidad \\(\\boldsymbol{\\mu} \\) que es igual a la tasa de nacimientos, 
-                               por lo que la población se mantiene constante en todo momento.",
+                               por lo que la población se mantiene constante en todo momento. En este modelo, 
+                               el número reproductivo básico \\(R_0\\) puede ser escrito en términos de los 
+                               otros parámetros de la siguiente forma \\(R_0=\\frac{\\beta}{\\gamma}\\).",
                                class = "eqtext")
                       ),
                       
