@@ -1171,11 +1171,13 @@ server <- function(input, output, session) {
           div(style="height: 20px;"),
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
-            "Referencia 1"
+            "Prodanov D. (2022). Analytical solutions and parameter estimation of 
+            the SIR epidemic model. Mathematical Analysis of Infectious Diseases, 
+            163–189. https://doi.org/10.1016/B978-0-32-390504-6.00015-2"
           ),
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
-            "Referencia 2"
+            "Sheposh, R. (2024). Coronavirus Disease 2019 (COVID-19). Salem Press Encyclopedia of Health. "
           ),
           div(
             actionButton(
