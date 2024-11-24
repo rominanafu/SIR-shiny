@@ -633,7 +633,7 @@ server <- function(input, output, session) {
                   
                   # Pestaña de modelo 2 con EDOs
                   tabPanel(
-                    title = "SIR+vacunación",
+                    title = "SIR + vacunación",
                     
                     div(
                       class = "title-section",
@@ -641,30 +641,26 @@ server <- function(input, output, session) {
                       margin-top: 10px;",
                       "Título"
                     ),
-                    
                     div(
                       style = "display: flex; justify-content: space-between; align-items: flex-start;",
                       
                       # Sección de Información (a la izquierda de la tabla de parámetros)
-                      div(
+                      div(withMathJax(),
                         class = "info-section",
                         style = "color: #ffffff;",
-                        p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
-                          sit amet fermentum libero condimentum id. Aliquam quis erat at
-                          lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
-                          ac ante ipsum primis in faucibus. Phasellus feugiat rhoncus quam in dictum.
-                          Aliquam orci nulla, pulvinar ac mollis et, pellentesque ac lectus.
-                          Phasellus egestas ipsum a massa porta fermentum quis at dolor. In
-                          sit amet enim sed ex vulputate blandit a at tellus. Nam tempus diam
-                          eget est auctor dictum. Integer ac molestie risus."),
-                        p("Nunc vel semper nibh. Proin id nulla felis. Phasellus fringilla metus nisi,
-                          sit amet fermentum libero condimentum id. Aliquam quis erat at
-                          lectus lacinia dignissim et vel nisl. Interdum et malesuada fames
-                          ac ante ipsum primis in faucibus. Phasellus feugiat rhoncus quam in dictum.
-                          Aliquam orci nulla, pulvinar ac mollis et, pellentesque ac lectus.
-                          Phasellus egestas ipsum a massa porta fermentum quis at dolor. In
-                          sit amet enim sed ex vulputate blandit a at tellus. Nam tempus diam
-                          eget est auctor dictum. Integer ac molestie risus.")
+                        p('Ahora, el modelo SIRV se basa en el modelo SIR tradicional, 
+                        pero añadiendo un grupo de V (vacunados), donde u es el número de 
+                        individuos susceptibles que han sido vacunados. En éste modelo, la 
+                        vacunación se da de dos maneras. En primer lugar, se da eliminando 
+                        un número u de individuos del grupo de susceptibles, y 
+                        en segundo lugar, dentro del grupo de Vacunados se suman, y 
+                        después se resta la fracción de muertes en la población vacunada. 
+'), p('Éste modelo está basado en el modelo de Hernandez-Cervantes et al. (2022), en el 
+cuál el parametro u representa, con un mismo número, la intensidad de los esfuerzos de vacunación
+por medio del número de susceptibles vacunados por unidad de tiempo. Si u es bajo, significa que la 
+epidemia no está controlada significativamente, y en cambio si u es alto, significa un rápido lanzamiento 
+de la vacunación sobre la población, lo cuál reduce los infectados (I) de manera más rápida. 
+')
                       ),
                       
                       # Parámetros
@@ -713,20 +709,17 @@ server <- function(input, output, session) {
                     div(
                       class = "info-section",
                       style = "color: #ffffff; margin-top: 20px; margin-bottom: 20px;",
-                      p("Duis ut nulla id tellus sodales tempor in sit amet risus.
-                          Fusce ac pulvinar ipsum, id commodo risus. Nunc rutrum mi ipsum,
-                          ac faucibus elit dapibus vitae. Integer est enim, finibus ac pretium in,
-                          ullamcorper vel est. Nulla in est quis arcu maximus dictum et non metus.
-                          Donec tempor suscipit risus. Quisque accumsan, tortor eu sagittis
-                          tincidunt, lacus leo suscipit nisl, id lobortis nulla sapien nec nulla.
-                          Vestibulum faucibus vel dui nec dignissim. Etiam aliquam egestas justo,
-                          nec egestas nunc. Fusce faucibus egestas tempor. Morbi faucibus augue
-                          varius tincidunt pretium. Aliquam tempor, tellus non fringilla viverra,
-                          turpis nibh fringilla massa, sit amet congue ex neque posuere risus.
-                          Aliquam dignissim ex et purus mattis imperdiet. Integer mauris risus,
-                          porta nec pulvinar sit amet, viverra sit amet ex.")
+                      withMathJax(), 
+                      tags$p("Finalmente, éstos nuevos cambios dan lugar al siguiente sistema de ecuaciones: ", 
+                             class = 'eqtext'), 
+                      tags$p("$$\\frac{dS}{dt}=\\mu N - \\beta I \\frac{S}{N} - \\mu S - u\\\\
+                             \\frac{dI}{dt}=\\beta I \\frac{S}{N} - \\gamma I - \\mu I \\\\
+                             \\frac{dR}{dt}=\\gamma I - \\mu R\\\\
+                             \\frac{dV}{dt} = u - uV$$"
+                             ,class = "eqcenter")
                     ),
-                    
+                    div('Estas ecuaciones pueden ser representadas con el siguiente diagrama: 
+'), 
                     div(
                       class = "diagram-section",
                       style = "margin-top: 40px; display: flex; align-items: center;
@@ -1038,7 +1031,7 @@ server <- function(input, output, session) {
                       class = "diagram-section",
                       style = "margin-top: 40px; display: flex; align-items: center;
                       justify-content: center; margin-bottom: 50px;",
-                      img(src = "diagram_image.jpg", alt = "Diagrama del Modelo SIR",
+                      img(src = "diagrama-sir-probabilistico.jpg", alt = "Diagrama del Modelo SIR",
                           style = "width: 80%; border-radius: 8px;")
                     ),
                     
