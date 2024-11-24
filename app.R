@@ -334,20 +334,37 @@ server <- function(input, output, session) {
             "COVID-19"
           ),
           div(
-            style = "color: white; font-size: 1.5rem; padding-bottom: 30px;
+            style = "color: white; font-size: 1.5rem; padding-bottom: 5px;
             padding-top: 10px;",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie
-        laoreet purus, ac lacinia arcu fermentum non. Sed suscipit erat mi.
-        Nulla nec quam sed metus gravida placerat. Ut maximus orci ac quam
-        pellentesque tristique. Aenean vitae euismod ligula, vitae sollicitudin
-        erat. Sed sit amet lectus feugiat, placerat nulla ut, varius risus.
-        Quisque quis gravida lectus. Nulla lobortis mattis mauris, at condimentum
-        odio luctus quis. Integer vel odio ex. Orci varius natoque penatibus et
-        magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id
-        sodales justo. Aenean vitae gravida justo. Mauris ut posuere odio, sit
-        amet accumsan quam. Mauris ultrices, odio vitae facilisis blandit, risus
-        felis accumsan nulla, in imperdiet erat nulla in diam. Pellentesque
-        pellentesque orci a mi sollicitudin porta."
+            "La pandemia de COVID-19, causada por el virus SARS-CoV-2, comenzó a 
+            finales de 2019 en la ciudad de Wuhan, China, y rápidamente se convirtió 
+            en una crisis de salud global. Este virus pertenece a la familia de los 
+            coronavirus, conocidos por causar enfermedades que van desde resfriados 
+            comunes hasta infecciones respiratorias graves, como el SARS en 2002 
+            y el MERS en 2012. Aunque se cree que el SARS-CoV-2 se originó en 
+            animales, su transición exacta a humanos sigue siendo objeto de debate."
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 5px;
+            padding-top: 10px;",
+            "En marzo de 2020, la Organización Mundial de la Salud (OMS) declaró al 
+            COVID-19 como una pandemia, lo que llevó a medidas sin precedentes para 
+            contener su propagación, incluyendo cuarentenas, restricciones de viaje 
+            y el uso obligatorio de mascarillas. A pesar de los esfuerzos globales, 
+            la enfermedad se extendió rápidamente, causando millones de muertes y un 
+            impacto devastador en los sistemas de salud, la economía y las dinámicas 
+            sociales a nivel mundial."
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 20px;
+            padding-top: 10px;",
+            "El desarrollo y distribución de vacunas en tiempo récord representó un 
+            hito científico que logró reducir significativamente las tasas de mortalidad 
+            y casos graves en muchos países. Sin embargo, la aparición de variantes 
+            del virus, como Delta y Ómicron, planteó desafíos continuos en la lucha 
+            contra la enfermedad. A medida que la pandemia avanzaba, quedó claro 
+            que su impacto iba más allá de la salud física, afectando la salud mental, 
+            la educación y las desigualdades sociales en todo el mundo."
           ),
           div(
             class="subtitulo",
