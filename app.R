@@ -527,47 +527,6 @@ server <- function(input, output, session) {
                                el número reproductivo básico \\(R_0\\) puede ser escrito en términos de los 
                                otros parámetros de la siguiente forma \\(R_0=\\frac{\\beta}{\\gamma}\\).",
                                class = "eqtext")
-                      ),
-                      
-                      # Parámetros
-                      div(
-                        class = "parameters-section",
-                        style = "background-color: #2c3e50; padding: 10px; border-radius: 8px;
-                        padding-left: 20px; padding-right: 20px; margin-left: 20px; margin-right: 10px;",
-                        
-                        h4(style = "color: #fff; text-align: center; font-weight: bold; ", "Parámetros SIR"),
-                        
-                        # Tabla de parámetros
-                        tags$table(
-                          style = "color: white; width: 100%;",
-                          
-                          tags$tbody(
-                            tags$tr(
-                              tags$td("Población", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_uno"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("% población susceptible", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_dos"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("Mu", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_tres"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("Beta", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_cuatro"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("Gamma", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_cinco"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("Días a graficar", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_seis"), style = "text-align: left;")
-                            )
-                          )
-                        )
                       )
                     ),
                     
@@ -608,12 +567,6 @@ server <- function(input, output, session) {
                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                            max-width: 250px;
                            color: #fff;",
-                          numericInput(inputId = "N",
-                                       label = tags$span(style = "font-weight: bold; color: #fff;",
-                                                         "Población"),
-                                       value = 1000,
-                                       min = 1000,
-                                       max = 5000),
                           sliderInput(
                             inputId = 's_por',
                             label = tags$span(style = "font-weight: bold; color: #fff;",
@@ -645,14 +598,6 @@ server <- function(input, output, session) {
                             min = 0.01,
                             max = 0.99,
                             value = 0.15
-                          ),
-                          sliderInput(
-                            inputId = 'dias',
-                            label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Días a graficar"),
-                            min = 1,
-                            max = 1500,
-                            value = 365
                           )
                         )
                       ),
@@ -688,53 +633,12 @@ server <- function(input, output, session) {
                         en segundo lugar, dentro del grupo de Vacunados se suman, y 
                         después se resta la fracción de muertes en la población vacunada. 
                         '),
-                        p('Éste modelo está basado en el modelo de Hernandez-Cervantes et al. (2022), en el 
+                          p('Éste modelo está basado en el modelo de Hernandez-Cervantes et al. (2022), en el 
                         cuál el parametro u representa, con un mismo número, la intensidad de los esfuerzos de vacunación
                         por medio del número de susceptibles vacunados por unidad de tiempo. Si u es bajo, significa que la 
                         epidemia no está controlada significativamente, y en cambio si u es alto, significa un rápido lanzamiento 
                         de la vacunación sobre la población, lo cuál reduce los infectados (I) de manera más rápida. 
                         ')
-                      ),
-                      
-                      # Parámetros
-                      div(
-                        class = "parameters-section",
-                        style = "background-color: #2c3e50; padding: 10px; border-radius: 8px;
-                        padding-left: 30px; padding-right: 30px; margin-left: 20px; margin-right: 10px;",
-                        
-                        h4(style = "color: #fff; text-align: center; font-weight: bold; ", "Parámetros SIR"),
-                        
-                        # Tabla de parámetros
-                        tags$table(
-                          style = "color: white; width: 100%;",
-                          
-                          tags$tbody(
-                            tags$tr(
-                              tags$td("Mu", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_uno"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("Beta", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_dos"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("Gamma", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_tres"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("P", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_cuatro"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("U", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_cinco"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("T max", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_seis"), style = "text-align: left;")
-                            )
-                          )
-                        )
                       )
                     ),
                     
@@ -773,12 +677,6 @@ server <- function(input, output, session) {
                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                            max-width: 250px;
                            color: #fff;",
-                          numericInput(inputId = "N_2",
-                                       label = tags$span(style = "font-weight: bold; color: #fff;",
-                                                         "Población"),
-                                       value = 10000,
-                                       min = 1000,
-                                       max = 10000),
                           sliderInput(
                             inputId = 's_por_2',
                             label = tags$span(style = "font-weight: bold; color: #fff;",
@@ -817,15 +715,7 @@ server <- function(input, output, session) {
                             min = 1, 
                             max = 40, 
                             value = 4
-                          ), 
-                          sliderInput(
-                            inputId = 'dias_2',
-                            label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Días a graficar"),
-                            min = 1,
-                            max = 1500,
-                            value = 365
-                          ) 
+                          )
                         )
                       ),
                       div(
@@ -886,47 +776,6 @@ server <- function(input, output, session) {
                                nuevo número de recuperados, actualizando cada uno de estos grupos.",
                                class = "eqtext")
                         #tags$p("$$$$",class = "eqcenter")
-                      ),
-                      
-                      # Parámetros
-                      div(
-                        class = "parameters-section",
-                        style = "background-color: #2c3e50; padding: 10px; border-radius: 8px;
-                        padding-left: 30px; padding-right: 30px; margin-left: 20px; margin-right: 10px;",
-                        
-                        h4(style = "color: #fff; text-align: center; font-weight: bold; ", "Parámetros SIR"),
-                        
-                        # Tabla de parámetros
-                        tags$table(
-                          style = "color: white; width: 100%;",
-                          
-                          tags$tbody(
-                            tags$tr(
-                              tags$td("N", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_uno"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("I(1)", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_dos"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("p_infección", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_tres"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("p_recuperación", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_cuatro"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("p_muerte", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_cinco"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("Días", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_seis"), style = "text-align: left;")
-                            )
-                          )
-                        )
                       )
                     ),
                     
@@ -1043,47 +892,6 @@ server <- function(input, output, session) {
                                   class = "eqtext")
                         )
                         #tags$p("$$$$",class = "eqcenter")
-                      ),
-                      
-                      # Parámetros
-                      div(
-                        class = "parameters-section",
-                        style = "background-color: #2c3e50; padding: 10px; border-radius: 8px;
-                        padding-left: 30px; padding-right: 30px; margin-left: 20px; margin-right: 10px;",
-                        
-                        h4(style = "color: #fff; text-align: center; font-weight: bold; ", "Parámetros SIR"),
-                        
-                        # Tabla de parámetros
-                        tags$table(
-                          style = "color: white; width: 100%;",
-                          
-                          tags$tbody(
-                            tags$tr(
-                              tags$td("uno", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_uno"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("dos", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_dos"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("tres", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_tres"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("cuatro", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_cuatro"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("cinco", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_cinco"), style = "text-align: left;")
-                            ),
-                            tags$tr(
-                              tags$td("seis", style = "padding-right: 20px; text-align: right;"),
-                              tags$td(textOutput("param_seis"), style = "text-align: left;")
-                            )
-                          )
-                        )
                       )
                     ),
                     
@@ -1171,9 +979,55 @@ server <- function(input, output, session) {
               ),
               
               ##################################################################
-              tabItem( # pros-contras de edos y vars
-                # imagenes de comparacion sir simple entre edos y vars
-                tabName = "comp"
+              tabItem(
+                tabName = "comp",
+                p(class="subtitulo", "Ecuaciones diferenciales"),
+                tags$table(
+                  tags$tr(
+                    tags$td(style = "font-weight: bold", "Ventajas"), 
+                    tags$td(style = "font-weight: bold", "Desventajas")
+                  ),
+                  tags$tr(
+                    tags$td(
+                      tags$ul(
+                        tags$li("Es un modelo práctico, facilitando el entendimiento del impacto de cada parámetro"),
+                        tags$li("Permite una estimación de R0 en una enfermedad emergente, logrando la predicción de una epidemia"),
+                        tags$li("Se pueden realizar aproximaciones numéricas para hacer predicciones a largo plazo")
+                      )
+                    ),
+                    tags$td(
+                      tags$ul(
+                        tags$li("No se pueden representar medidas variables, como las de aislamiento, lo cual se adaptaría a la variabilidad en la tasa de transmisión"),
+                        tags$li("Supone una tasa de infección y el número reproductivo básico como constantes a lo largo de la pandemia"),
+                        tags$li("No se pueden diferenciar variaciones en el virus"),
+                        tags$li("Es un modelo idealizado que no considera incertidumbre")
+                      )
+                    )
+                  )
+                ),
+                p(class="subtitulo", "Variables aleatorias"),
+                tags$table(
+                  tags$tr(
+                    tags$td(style = "font-weight: bold", "Ventajas"), 
+                    tags$td(style = "font-weight: bold", "Desventajas")
+                  ),
+                  tags$tr(
+                    tags$td(
+                      tags$ul(
+                        tags$li("Captura la incertidumbre que puede llegar a existir en la vida real"),
+                        tags$li("Las simulaciones no siempre dan el mismo resultado, por lo que se pueden considerar diferentes escenarios "),
+                        tags$li("Se pueden evaluar diferentes riesgos y tomar medidas, dependiendo de los escenarios")
+                      )
+                    ),
+                    tags$td(
+                      tags$ul(
+                        tags$li("Las predicciones a largo plazo podrían ser menos precisas"),
+                        tags$li("Los resultados pueden ser muy variantes, dificultando la interpretación"),
+                        tags$li("Puede ser muy sensible a ciertos parámetros o a variaciones locales, disminuyendo la confianza en el modelo")
+                      )
+                    )
+                  )
+                )
               )
               
             )
@@ -1219,8 +1073,8 @@ server <- function(input, output, session) {
           })
         }
         
-        t <- seq(0, input$dias, 1)
-        N <- input$N
+        t <- seq(0, 365, 1)
+        N <- 10000
         S <- N * input$s_por
         I <- N - S
         R <- 0
@@ -1233,7 +1087,7 @@ server <- function(input, output, session) {
           geom_line(aes(x = solucion[[1]], y = solucion$S, color = 'susceptibles')) +
           geom_line(aes(x = solucion[[1]], y = solucion$I, color = 'infectados')) +
           geom_line(aes(x = solucion[[1]], y = solucion$R, color = 'recuperados')) +
-          ylim(0, input$N)
+          ylim(0, N)
         
         p <- p +
           scale_color_manual(values = c("susceptibles" = "#000066",
@@ -1260,8 +1114,8 @@ server <- function(input, output, session) {
                })
         }
         
-        t = seq(0, input$dias_2, 0.1) 
-        N = input$N_2
+        t = seq(0, 365, 0.1) 
+        N = 10000
         S = N * input$s_por_2
         I = N - S 
         R = 0 
@@ -1298,7 +1152,7 @@ server <- function(input, output, session) {
             ),
             name = "Categoría"
           ) +
-          ylim(0, input$N_2) 
+          ylim(0, 10000) 
         
       })
       output$plot3 <- renderPlot({
@@ -1485,13 +1339,29 @@ server <- function(input, output, session) {
           ),
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            "Hernández-Cervantes, J. J., Ávila-Pozos, R., & Jiménez-Munguía, R. R. (2022). Modelos epidemiológicos con control por vacunación en el estudio de la COVID-19. Pädi Boletín Científico De Ciencias Básicas E Ingenierías Del ICBI, 10(Especial), 108-116. https://doi.org/10.29057/icbi.v10iEspecial.8427"
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            "Huarachi Olivera, R. E., & Lazarte RIvera, A. M. (2021). Modelo SIR de la tendencia pandémica de COVID-19 en Perú. [SIR model of the pandemic trend of COVID-19 in Peru]. Revista de la Facultad de Ciencias Medicas (Cordoba, Argentina), 78(3), 236–242. https://doi.org/10.31053/1853.0605.v78.n3.31142"
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
             "Prodanov D. (2022). Analytical solutions and parameter estimation of 
             the SIR epidemic model. Mathematical Analysis of Infectious Diseases, 
             163–189. https://doi.org/10.1016/B978-0-32-390504-6.00015-2"
           ),
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            "Sanchez, A. (2022) Análisis y ajuste de modelos para el estudio de la epidemia de covid-19 en españa. Recuperado de https://oa.upm.es/72592/3/TFG_ALBA_MARIA_SANCHEZ_MARTIN.pdf"
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
             "Sheposh, R. (2024). Coronavirus Disease 2019 (COVID-19). Salem Press Encyclopedia of Health"
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            "Wang, B., Andraweera, P., Elliott, S., Mohammed, H., Lassi, Z., Twigger, A., Borgas, C., Gunasekera, S., Ladhani, S., & Marshall, H. S. (2023). Asymptomatic SARS-CoV-2 Infection by Age: A Global Systematic Review and Meta-analysis. The Pediatric infectious disease journal, 42(3), 232–239. https://doi.org/10.1097/INF.0000000000003791"
           ),
           div(
             actionButton(
