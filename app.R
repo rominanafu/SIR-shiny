@@ -905,7 +905,7 @@ server <- function(input, output, session) {
                       class = "diagram-section",
                       style = "margin-top: 40px; display: flex; align-items: center;
                       justify-content: center; margin-bottom: 50px;",
-                      img(src = "diagrama-sir-probabilistico.jpg", alt = "Diagrama del Modelo SIR",
+                      img(src = "diagrama-sir-proba-basico.jpg", alt = "Diagrama del Modelo SIR",
                           style = "width: 80%; border-radius: 8px;")
                     ),
                     
@@ -1309,5 +1309,3 @@ server <- function(input, output, session) {
   })
   
 }
-
-shinyApp(ui, server)
