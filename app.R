@@ -1071,21 +1071,22 @@ server <- function(input, output, session) {
                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                            max-width: 250px;
                            color: #fff;",
+                          ################ Sliders e inputs a modificar
                           sliderInput(
-                            inputId = "n4",
+                            inputId = "prob_cuarentena_sintomatico",
                             label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Bins number"),
-                            min = 20,
-                            max = 50,
-                            value = 50
+                                              "Probabilidad de ir a cuarentena siendo sintomático"),
+                            min = 0,
+                            max = 1,
+                            value = 0.95
                           ),
                           sliderInput(
-                            inputId = "_",
+                            inputId = "prob_recuperarse4",
                             label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Ejemplo 2"),
-                            min = 20,
-                            max = 50,
-                            value = 50
+                                              "Probabilidad de recuperarse"),
+                            min = 0,
+                            max = 1,
+                            value = 0.90
                           )
                         )
                       ),
@@ -1265,10 +1266,14 @@ server <- function(input, output, session) {
         S[1] <- N - I[1]
         
         # probabilidades
-        prob_infectarse <- 0.05
-        prob_sintomatico <- 0.7
-        prob_cuarentena_sint <- 0.9
-        prob_recuperarse <- 0.95
+        prob_infectarse <- 0.05  # sin cubrebocas
+        prob_infectarse_cubrebocas <- 0.02 # con cubrebocas
+        
+        prob_cuarentena_sint <- input$prob_cuarentena_sintomatico
+        prob_recuperarse <- input$prob_recuperarse4
+        
+        prob_sintomatico <- 0.559
+        
         
         # Rango de personas con las que alguien interactua
         mean_interactions <- 5
@@ -1303,7 +1308,6 @@ server <- function(input, output, session) {
             infected <- 0
           }
           
-          #infected <- sum(rbinom(S[i], 1, prob_infectarse))
           S[i+1] <- S[i+1] - infected
           E[1] <- infected
           
