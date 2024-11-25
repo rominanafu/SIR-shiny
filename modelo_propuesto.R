@@ -54,6 +54,7 @@ for (i in seq(dias-1)) {
   
   if( S[i] != 0 ) {
     interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
+    interacciones[interacciones < 0] <- 0
     probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
     contagios <- 1-rbinom(S[i], 1, probabilities)
     infected <- sum(contagios)

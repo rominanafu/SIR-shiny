@@ -946,6 +946,22 @@ server <- function(input, output, session) {
                             min = 0,
                             max = 365,
                             value = 180
+                          ),
+                          sliderInput(
+                            inputId = "dias_inmunidad4",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Dias de inmunidad"),
+                            min = 0,
+                            max = 100,
+                            value = 60
+                          ),
+                          sliderInput(
+                            inputId = "promedio_interacciones4",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Promedio de interacciones diarias de una persona"),
+                            min = 0,
+                            max = 10,
+                            value = 5
                           )
                         )
                       ),
@@ -1157,9 +1173,6 @@ server <- function(input, output, session) {
       })
       output$plot3 <- renderPlot({
         
-        library(data.table)
-        library(ggplot2)
-        
         dias <- 200
         t <- 1:dias
         
@@ -1207,7 +1220,7 @@ server <- function(input, output, session) {
         
         dias_incubacion <- 4
         dias_infeccion <- 7
-        dias_inmunidad <- 60
+        dias_inmunidad <- input$dias_inmunidad4
         
         N <- 10000
         S <- rep(0, dias)
@@ -1234,7 +1247,7 @@ server <- function(input, output, session) {
         
         
         # Rango de personas con las que alguien interactua
-        mean_interactions <- 5
+        mean_interactions <- input$promedio_interacciones4
         stdDesv_interactions <- 2
         
         for (i in seq(dias-1)) {
@@ -1265,6 +1278,7 @@ server <- function(input, output, session) {
           
           if( S[i] != 0 ) {
             interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
+            interacciones[interacciones < 0] <- 0
             probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
             contagios <- 1-rbinom(S[i], 1, probabilities)
             infected <- sum(contagios)
