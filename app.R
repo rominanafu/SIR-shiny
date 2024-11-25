@@ -5,6 +5,7 @@ library(shinyjs)
 library(ggplot2)
 library(deSolve)
 library(ggiraph)
+library(data.table)
 
 customCSS <- HTML({"
 html, body {
