@@ -1316,13 +1316,17 @@ server <- function(input, output, session) {
           div(style="height: 20px;"),
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            "He, S., Peng, Y., & Sun, K. (2020). SEIR modeling of the COVID-19 and its dynamics. Nonlinear dynamics, 101(3), 1667–1680. https://doi.org/10.1007/s11071-020-05743-y"
+          ),
+          div(
+            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
             "Prodanov D. (2022). Analytical solutions and parameter estimation of 
             the SIR epidemic model. Mathematical Analysis of Infectious Diseases, 
             163–189. https://doi.org/10.1016/B978-0-32-390504-6.00015-2"
           ),
           div(
             style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
-            "Sheposh, R. (2024). Coronavirus Disease 2019 (COVID-19). Salem Press Encyclopedia of Health. "
+            "Sheposh, R. (2024). Coronavirus Disease 2019 (COVID-19). Salem Press Encyclopedia of Health"
           ),
           div(
             actionButton(
