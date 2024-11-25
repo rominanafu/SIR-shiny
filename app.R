@@ -2,6 +2,8 @@
 library(shiny)
 library(shinydashboard)
 library(shinyjs)
+library(ggplot2)
+library(deSolve)
 
 customCSS <- HTML({"
 html, body {
@@ -433,7 +435,7 @@ server <- function(input, output, session) {
                 label = tags$i(class = "fa fa-arrow-left"),
                 style = "margin-right: 25px; background-color: #00cbcc; border: none; cursor: pointer;"
               ),
-              span("Lorem ipsum", style = "color: #00cbcc; font-weight: bold;")
+              span("Lorem ipsum", style = "color: #00cbcc; font-weight: bold;") ######################################### CAMBIAR NOMBRE
             )
           ),
           
@@ -606,27 +608,57 @@ server <- function(input, output, session) {
                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                            max-width: 250px;
                            color: #fff;",
+                          numericInput(inputId = "N",
+                                       label = tags$span(style = "font-weight: bold; color: #fff;",
+                                                         "Población"),
+                                       value = 1000,
+                                       min = 1000,
+                                       max = 5000),
                           sliderInput(
-                            inputId = "n",
+                            inputId = 's_por',
                             label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Bins number"),
-                            min = 20,
-                            max = 50,
-                            value = 50
+                                              "Porcentaje de población inicial susceptible"),
+                            min = 0.001,
+                            max = 0.999,
+                            value = 0.999
                           ),
                           sliderInput(
-                            inputId = "_",
+                            inputId = 'mu',
                             label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Ejemplo 2"),
-                            min = 20,
-                            max = 50,
-                            value = 50
+                                              "Mu"),
+                            min = 0.0,
+                            max = 0.05,
+                            value = 0.001
+                          ),
+                          sliderInput(
+                            inputId = 'beta',
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Beta"),
+                            min = 0.01,
+                            max = 0.99,
+                            value = 0.3
+                          ),
+                          sliderInput(
+                            inputId = 'gamma',
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Gamma"),
+                            min = 0.01,
+                            max = 0.99,
+                            value = 0.15
+                          ),
+                          sliderInput(
+                            inputId = 'dias',
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Días a graficar"),
+                            min = 1,
+                            max = 1500,
+                            value = 365
                           )
                         )
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot1", height = "400px")
+                        plotOutput("sir_basico_edos", height = "550px")
                       )
                     )
                   ),
@@ -655,12 +687,13 @@ server <- function(input, output, session) {
                         un número u de individuos del grupo de susceptibles, y 
                         en segundo lugar, dentro del grupo de Vacunados se suman, y 
                         después se resta la fracción de muertes en la población vacunada. 
-'), p('Éste modelo está basado en el modelo de Hernandez-Cervantes et al. (2022), en el 
-cuál el parametro u representa, con un mismo número, la intensidad de los esfuerzos de vacunación
-por medio del número de susceptibles vacunados por unidad de tiempo. Si u es bajo, significa que la 
-epidemia no está controlada significativamente, y en cambio si u es alto, significa un rápido lanzamiento 
-de la vacunación sobre la población, lo cuál reduce los infectados (I) de manera más rápida. 
-')
+                        '),
+                        p('Éste modelo está basado en el modelo de Hernandez-Cervantes et al. (2022), en el 
+                        cuál el parametro u representa, con un mismo número, la intensidad de los esfuerzos de vacunación
+                        por medio del número de susceptibles vacunados por unidad de tiempo. Si u es bajo, significa que la 
+                        epidemia no está controlada significativamente, y en cambio si u es alto, significa un rápido lanzamiento 
+                        de la vacunación sobre la población, lo cuál reduce los infectados (I) de manera más rápida. 
+                        ')
                       ),
                       
                       # Parámetros
@@ -760,7 +793,7 @@ de la vacunación sobre la población, lo cuál reduce los infectados (I) de man
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot2", height = "400px")
+                        plotOutput("plot2", height = "550px")
                       )
                     )
                   )
@@ -908,7 +941,7 @@ de la vacunación sobre la población, lo cuál reduce los infectados (I) de man
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot3", height = "400px")
+                        plotOutput("plot3", height = "550px")
                       )
                     )
                   ),
@@ -1067,7 +1100,7 @@ de la vacunación sobre la población, lo cuál reduce los infectados (I) de man
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot4", height = "400px")
+                        plotOutput("plot4", height = "550px")
                       )
                     )
                   )
@@ -1125,9 +1158,48 @@ de la vacunación sobre la población, lo cuál reduce los infectados (I) de man
       output$param_seis <- renderText({ sprintf("%.3f", params2$mu) })
       
       # Output de plots
-      output$plot1 <- renderPlot({
-        data <- rnorm(500) 
-        hist(data, breaks=input$n)
+      output$sir_basico_edos <- renderPlot({ # Modelo SIR básico con sistema de EDOs
+        
+        # funcion con las ecuaciones diferenciales
+        sir.sol <- function(t, state, parms) {
+          mu <- parms$mu
+          beta <- parms$beta
+          gamma <- parms$gamma
+          
+          with(as.list(state), {
+            dndt = rep(0, length(state))
+            dndt[1] = mu * N - beta * I * S / N - mu * S
+            dndt[2] = beta * I * S / N - gamma * I - mu * I
+            dndt[3] = gamma * I - mu * R
+            dndt[4] = mu * (N - S - I - R)
+            return(list(dndt))
+          })
+        }
+        
+        t <- seq(0, input$dias, 1)
+        N <- input$N
+        S <- N * input$s_por
+        I <- N - S
+        R <- 0
+        init <- c(S = S, I = I, R = R, N = N)
+        
+        solucion <- ode(y = init, times = t, func = sir.sol, parms = input)
+        solucion <- as.data.frame(solucion)
+        
+        p <- ggplot() + xlab('Tiempo (dias)') + ylab('y') +
+          geom_line(aes(x = solucion[[1]], y = solucion$S, color = 'susceptibles')) +
+          geom_line(aes(x = solucion[[1]], y = solucion$I, color = 'infectados')) +
+          geom_line(aes(x = solucion[[1]], y = solucion$R, color = 'recuperados')) +
+          ylim(0, input$N)
+        
+        p <- p +
+          scale_color_manual(values = c("susceptibles" = "#000066",
+                                        "infectados" = "#CC0033",
+                                        "recuperados" = "#FF6600")) +
+          ggtitle('Modelo SIR con ecuaciones diferenciales') +
+          xlab('Tiempo (días)') +
+          ylab('Personas')
+        p
       })
       output$plot2 <- renderPlot({
         data <- rnorm(500) 
