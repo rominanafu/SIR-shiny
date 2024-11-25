@@ -4,6 +4,7 @@ library(shinydashboard)
 library(shinyjs)
 library(ggplot2)
 library(deSolve)
+library(ggiraph)
 
 customCSS <- HTML({"
 html, body {
@@ -603,7 +604,7 @@ server <- function(input, output, session) {
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("sir_basico_edos", height = "550px")
+                        girafeOutput("sir_basico_edos", height = "100%")
                       )
                     )
                   ),
@@ -720,7 +721,7 @@ server <- function(input, output, session) {
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("sir_modificado_edos", height = "550px")
+                        girafeOutput("sir_modificado_edos", height = "100%")
                       )
                     )
                   )
@@ -835,7 +836,7 @@ server <- function(input, output, session) {
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot3", height = "550px")
+                        girafeOutput("plot3", height = "100%")
                       )
                     )
                   ),
@@ -967,7 +968,7 @@ server <- function(input, output, session) {
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot4", height = "550px")
+                        plotOutput("plot4", height = "100%")
                       )
                     )
                   )
@@ -1071,24 +1072,26 @@ server <- function(input, output, session) {
       output$param_seis <- renderText({ sprintf("%.3f", params2$mu) })
       
       # Output de plots
-      output$sir_basico_edos <- renderPlot({ # Modelo SIR básico con sistema de EDOs
+      output$sir_basico_edos <- renderGirafe({ 
+        # Modelo SIR básico con sistema de EDOs
         
-        # funcion con las ecuaciones diferenciales
+        # Función con las ecuaciones diferenciales
         sir.sol <- function(t, state, parms) {
           mu <- parms$mu
           beta <- parms$beta
           gamma <- parms$gamma
           
           with(as.list(state), {
-            dndt = rep(0, length(state))
-            dndt[1] = mu * N - beta * I * S / N - mu * S
-            dndt[2] = beta * I * S / N - gamma * I - mu * I
-            dndt[3] = gamma * I - mu * R
-            dndt[4] = mu * (N - S - I - R)
+            dndt <- rep(0, length(state))
+            dndt[1] <- mu * N - beta * I * S / N - mu * S
+            dndt[2] <- beta * I * S / N - gamma * I - mu * I
+            dndt[3] <- gamma * I - mu * R
+            dndt[4] <- mu * (N - S - I - R)
             return(list(dndt))
           })
         }
         
+        # Parámetros iniciales
         t <- seq(0, 365, 1)
         N <- 10000
         S <- N * input$s_por
@@ -1096,25 +1099,50 @@ server <- function(input, output, session) {
         R <- 0
         init <- c(S = S, I = I, R = R, N = N)
         
+        # Solución de las ecuaciones diferenciales
         solucion <- ode(y = init, times = t, func = sir.sol, parms = input)
         solucion <- as.data.frame(solucion)
         
-        p <- ggplot() + xlab('Tiempo (dias)') + ylab('y') +
-          geom_line(aes(x = solucion[[1]], y = solucion$S, color = 'susceptibles')) +
-          geom_line(aes(x = solucion[[1]], y = solucion$I, color = 'infectados')) +
-          geom_line(aes(x = solucion[[1]], y = solucion$R, color = 'recuperados')) +
-          ylim(0, N)
+        # Preparar el gráfico
+        plot <- ggplot() +
+          xlab('Tiempo (días)') + ylab('Personas') +
+          geom_line_interactive(
+            aes(x = solucion[[1]], y = solucion$S, color = 'susceptibles', tooltip = 'Susceptibles', data_id = 'susceptibles'),
+            size = 1
+          ) +
+          geom_line_interactive(
+            aes(x = solucion[[1]], y = solucion$I, color = 'infectados', tooltip = 'Infectados', data_id = 'infectados'),
+            size = 1
+          ) +
+          geom_line_interactive(
+            aes(x = solucion[[1]], y = solucion$R, color = 'recuperados', tooltip = 'Recuperados', data_id = 'recuperados'),
+            size = 1
+          ) +
+          ylim(0, N) +
+          scale_color_manual(
+            values = c(
+              "susceptibles" = "#000066",
+              "infectados" = "#CC0033",
+              "recuperados" = "#FF6600"
+            ),
+            name = "Categoría"
+          ) +
+          ggtitle('Modelo SIR con ecuaciones diferenciales')
         
-        p <- p +
-          scale_color_manual(values = c("susceptibles" = "#000066",
-                                        "infectados" = "#CC0033",
-                                        "recuperados" = "#FF6600")) +
-          ggtitle('Modelo SIR con ecuaciones diferenciales') +
-          xlab('Tiempo (días)') +
-          ylab('Personas')
-        p
+        # Convertir el gráfico en interactivo
+        interactive_plot <- girafe(ggobj = plot)
+        
+        # Opciones de interacción
+        interactive_plot <- girafe_options(
+          interactive_plot,
+          opts_hover(css = "stroke-width: 3px; transition: all 0.3s ease;"),
+          opts_hover_inv(css = "opacity:0.5; filter:saturate(10%);"),
+          opts_toolbar(saveaspng = FALSE)
+        )
+        
+        return(interactive_plot)
       })
-      output$sir_modificado_edos <- renderPlot({
+      output$sir_modificado_edos <- renderGirafe({
         
         #funcion con las ecuaciones diferenciales 
         sir.sol.2 <- function(t, state, parms) {
@@ -1152,9 +1180,11 @@ server <- function(input, output, session) {
           values_to = "value"
         )
         
-        # Plot with colors and legend
-        ggplot(data = solution_long, aes(x = time, y = value, color = category)) +
-          geom_line(size = 1) +
+        plot <- ggplot(data = solution_long, aes(
+          x = time, y = value, color = category,
+          tooltip = category, data_id = category
+        )) +
+          geom_line_interactive(size = 1) +
           xlab("Tiempo (días)") +
           ylab("Población") +
           ggtitle("Modelo SIR con Ecuaciones Diferenciales y Vacunación") +
@@ -1168,51 +1198,89 @@ server <- function(input, output, session) {
             ),
             name = "Categoría"
           ) +
-          ylim(0, 10000) 
+          ylim(0, N)
+        
+        interactive_plot <- girafe(ggobj = plot)
+        interactive_plot <- girafe_options(
+          interactive_plot,
+          opts_hover(css = "stroke-width: 3px; transition: all 0.3s ease;"),
+          opts_hover_inv(css = "opacity:0.5; filter:saturate(10%);"),
+          opts_toolbar(saveaspng = FALSE)
+        )
+        
+        return(interactive_plot)
         
       })
-      output$plot3 <- renderPlot({
-        
+      output$plot3 <- renderGirafe({
         dias <- 200
         t <- 1:dias
         
+
         S <- rep(0, dias)
         I <- rep(0, dias)
         R <- rep(0, dias)
         
         N <- 10000
         I[1] <- 3
-        S[1] <- N-I[1]-R[1]
+        S[1] <- N - I[1] - R[1]
         
         p_infeccion <- input$p_infeccion3
         p_recuperacion <- input$p_recuperacion3
         p_muerte <- input$p_muerte3
         
-        for( i in seq(dias-1) ) {
+
+        for (i in seq(dias - 1)) {
           infected <- sum(rbinom(S[i], 1, p_infeccion))
           recovered <- sum(rbinom(I[i], 1, p_recuperacion))
-          S[i+1] <- S[i]-infected
-          I[i+1] <- I[i]+infected-recovered
-          R[i+1] <- R[i]+recovered
-          muertos_S <- sum(rbinom(S[i+1], 1, p_muerte))
-          muertos_I <- sum(rbinom(I[i+1], 1, p_muerte))
-          muertos_R <- sum(rbinom(R[i+1], 1, p_muerte))
-          S[i+1] <- S[i+1]-muertos_S
-          I[i+1] <- I[i+1]-muertos_I
-          R[i+1] <- R[i+1]-muertos_R
-          nacimientos <- muertos_S+muertos_I+muertos_R
-          S[i+1] <- S[i+1]+nacimientos
+          S[i + 1] <- S[i] - infected
+          I[i + 1] <- I[i] + infected - recovered
+          R[i + 1] <- R[i] + recovered
+          muertos_S <- sum(rbinom(S[i + 1], 1, p_muerte))
+          muertos_I <- sum(rbinom(I[i + 1], 1, p_muerte))
+          muertos_R <- sum(rbinom(R[i + 1], 1, p_muerte))
+          S[i + 1] <- S[i + 1] - muertos_S
+          I[i + 1] <- I[i + 1] - muertos_I
+          R[i + 1] <- R[i + 1] - muertos_R
+          nacimientos <- muertos_S + muertos_I + muertos_R
+          S[i + 1] <- S[i + 1] + nacimientos
         }
         
-        p <- ggplot() +
-          geom_line(aes(x=t, y=S, color='Susceptibles')) +
-          geom_line(aes(x=t, y=I, color='Infectados')) +
-          geom_line(aes(x=t, y=R, color='Recuperados')) +
-          xlab('Tiempo (s)') +
-          ylab('Personas') +
-          labs(title = 'Modelo SIR')
+
+        data <- data.frame(
+          Time = rep(t, 3),
+          Population = c(S, I, R),
+          Category = c(rep("Susceptibles", dias), rep("Infectados", dias), rep("Recuperados", dias))
+        )
         
-        p
+
+        plot <- ggplot(data, aes(x = Time, y = Population, color = Category)) +
+          geom_line_interactive(aes(
+            tooltip = Category, data_id = Category
+          ), size = 1) +
+          xlab("Tiempo (días)") +
+          ylab("Personas") +
+          ggtitle("Modelo SIR") +
+          scale_color_manual(
+            values = c(
+              "Susceptibles" = "#000066",
+              "Infectados" = "#CC0033",
+              "Recuperados" = "#FF6600"
+            ),
+            name = "Categoría"
+          )
+        
+
+        interactive_plot <- girafe(ggobj = plot)
+        
+        # Add interactive options
+        interactive_plot <- girafe_options(
+          interactive_plot,
+          opts_hover(css = "stroke-width: 3px; transition: all 0.3s ease;"),
+          opts_hover_inv(css = "opacity:0.5; filter:saturate(10%);"),
+          opts_toolbar(saveaspng = FALSE)
+        )
+        
+        return(interactive_plot)
       })
       output$plot4 <- renderPlot({
         dias <- 365
@@ -1326,6 +1394,8 @@ server <- function(input, output, session) {
         
         p
       })
+      
+      
       
     }
     # else if (input$page$id == "comp") { # Variables aleatorias
