@@ -1087,6 +1087,20 @@ server <- function(input, output, session) {
                             min = 0,
                             max = 1,
                             value = 0.90
+                          ),
+                          checkboxInput(
+                            inputId = "bool_cubrebocas",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Uso de cubrebocas"),
+                            value = FALSE
+                          ),
+                          sliderInput(
+                            inputId = "dias_cubrebocas",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Dia a partir del que se usa el cubrebocas"),
+                            min = 0,
+                            max = 365,
+                            value = 180
                           )
                         )
                       ),
@@ -1244,7 +1258,7 @@ server <- function(input, output, session) {
         p
       })
       output$plot4 <- renderPlot({
-        dias <- 365*2
+        dias <- 365
         t <- 1:dias
         
         dias_incubacion <- 4
@@ -1266,7 +1280,7 @@ server <- function(input, output, session) {
         S[1] <- N - I[1]
         
         # probabilidades
-        prob_infectarse <- 0.05  # sin cubrebocas
+        prob_infectarse_sin_cubrebocas <- 0.05  # sin cubrebocas
         prob_infectarse_cubrebocas <- 0.02 # con cubrebocas
         
         prob_cuarentena_sint <- input$prob_cuarentena_sintomatico
@@ -1288,6 +1302,13 @@ server <- function(input, output, session) {
           IS_cuarentena <- shift(IS_cuarentena, n=1, fill = 0)
           I_asint <- shift(I_asint, n=1, fill = 0)
           R <- shift(R, n=1, fill = 0)
+          
+          if( input$bool_cubrebocas && i >= input$dias_cubrebocas ) {
+            prob_infectarse <- prob_infectarse_cubrebocas
+          }
+          else {
+            prob_infectarse <- prob_infectarse_sin_cubrebocas
+          }
           
           # pasar de recuperados a susceptibles
           
