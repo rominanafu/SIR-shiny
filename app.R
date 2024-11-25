@@ -773,27 +773,64 @@ server <- function(input, output, session) {
                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                            max-width: 250px;
                            color: #fff;",
+                          numericInput(inputId = "N_2",
+                                       label = tags$span(style = "font-weight: bold; color: #fff;",
+                                                         "Población"),
+                                       value = 10000,
+                                       min = 1000,
+                                       max = 10000),
                           sliderInput(
-                            inputId = "n2",
+                            inputId = 's_por_2',
                             label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Bins number"),
-                            min = 20,
-                            max = 50,
-                            value = 50
+                                              "Porcentaje de población inicial susceptible"),
+                            min = 0.001,
+                            max = 0.999,
+                            value = 0.999
+                          ), sliderInput(
+                            inputId = 'mu_2',
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Mu"),
+                            min = 0.0,
+                            max = 0.05,
+                            value = 0.001
                           ),
                           sliderInput(
-                            inputId = "_",
+                            inputId = 'beta_2',
                             label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Ejemplo 2"),
-                            min = 20,
-                            max = 50,
-                            value = 50
-                          )
+                                              "Beta"),
+                            min = 0.01,
+                            max = 0.99,
+                            value = 0.5
+                          ),
+                          sliderInput(
+                            inputId = 'gamma_2',
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Gamma"),
+                            min = 0.01,
+                            max = 0.99,
+                            value = 0.04
+                          ),
+                          sliderInput(
+                            inputId = 'u_2', 
+                            label = tags$span(style = 'font-weight: bold; color: #fff;', 
+                                              "Personas vacunadas por día"), 
+                            min = 1, 
+                            max = 40, 
+                            value = 4
+                          ), 
+                          sliderInput(
+                            inputId = 'dias_2',
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Días a graficar"),
+                            min = 1,
+                            max = 1500,
+                            value = 365
+                          ) 
                         )
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot2", height = "550px")
+                        plotOutput("sir_modificado_edos", height = "550px")
                       )
                     )
                   )
@@ -1207,9 +1244,62 @@ server <- function(input, output, session) {
           ylab('Personas')
         p
       })
-      output$plot2 <- renderPlot({
-        data <- rnorm(500) 
-        hist(data, breaks=input$n2)
+      output$sir_modificado_edos <- renderPlot({
+        
+        #funcion con las ecuaciones diferenciales 
+        sir.sol.2 <- function(t, state, parms) {
+          with(as.list(state), 
+               {
+                 dxdt = rep(0, length(state))
+                 dxdt[1] = parms$mu_2*N - parms$beta_2*I*S/N - parms$mu_2*S - parms$u_2
+                 dxdt[2] = parms$beta_2*I*S/N - parms$gamma_2*I - parms$mu_2*I
+                 dxdt[3] = parms$gamma_2*I - parms$mu_2*R
+                 dxdt[4] = parms$u_2 - parms$u_2 * V
+                 dxdt[5] = dxdt[1] + dxdt[2] + dxdt[3] + dxdt[4] 
+                 return(list(dxdt))
+               })
+        }
+        
+        t = seq(0, input$dias_2, 0.1) 
+        N = input$N_2
+        S = N * input$s_por_2
+        I = N - S 
+        R = 0 
+        V = 0
+        init = c(S = S, I = I, R = R, U = V, N = N)
+        
+        Output <- ode(y = init, times = t, func = sir.sol.2, parms = input)
+        solution = data.frame(time = Output[, 1], 
+                              susceptibles = Output[, 2],
+                              infectados = Output[, 3], 
+                              recuperados = Output[, 4], 
+                              vacunados = Output[, 5], 
+                              poblacion = Output[, 6])
+        solution_long <- tidyr::pivot_longer(
+          solution, 
+          cols = c(susceptibles, infectados, recuperados, vacunados, poblacion),
+          names_to = "category",
+          values_to = "value"
+        )
+        
+        # Plot with colors and legend
+        ggplot(data = solution_long, aes(x = time, y = value, color = category)) +
+          geom_line(size = 1) +
+          xlab("Tiempo (días)") +
+          ylab("Población") +
+          ggtitle("Modelo SIR con Ecuaciones Diferenciales y Vacunación") +
+          scale_color_manual(
+            values = c(
+              "susceptibles" = "#000066",
+              "infectados" = "#CC0033",
+              "recuperados" = "#FF6600",
+              "vacunados" = "purple",
+              "poblacion" = "black"
+            ),
+            name = "Categoría"
+          ) +
+          ylim(0, input$N_2) 
+        
       })
       output$plot3 <- renderPlot({
         
