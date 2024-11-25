@@ -922,20 +922,28 @@ server <- function(input, output, session) {
                            max-width: 250px;
                            color: #fff;",
                           sliderInput(
-                            inputId = "n3",
+                            inputId = "p_infeccion3",
                             label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Bins number"),
-                            min = 20,
-                            max = 50,
-                            value = 50
+                                              "Probabilidad de infección"),
+                            min = 0,
+                            max = 1,
+                            value = 0.05
                           ),
                           sliderInput(
-                            inputId = "_",
+                            inputId = "p_recuperacion3",
                             label = tags$span(style = "font-weight: bold; color: #fff;",
-                                              "Ejemplo 2"),
-                            min = 20,
-                            max = 50,
-                            value = 50
+                                              "Probabilidad de recuperación"),
+                            min = 0,
+                            max = 1,
+                            value = 0.5
+                          ),
+                          sliderInput(
+                            inputId = "p_muerte3",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Probabilidad de muerte"),
+                            min = 0,
+                            max = 1,
+                            value = 0.04
                           )
                         )
                       ),
@@ -1189,8 +1197,50 @@ server <- function(input, output, session) {
         hist(data, breaks=input$n2)
       })
       output$plot3 <- renderPlot({
-        data <- rnorm(500) 
-        hist(data, breaks=input$n3)
+        
+        library(data.table)
+        library(ggplot2)
+        
+        dias <- 200
+        t <- 1:dias
+        
+        S <- rep(0, dias)
+        I <- rep(0, dias)
+        R <- rep(0, dias)
+        
+        N <- 10000
+        I[1] <- 3
+        S[1] <- N-I[1]-R[1]
+        
+        p_infeccion <- input$p_infeccion3
+        p_recuperacion <- input$p_recuperacion3
+        p_muerte <- input$p_muerte3
+        
+        for( i in seq(dias-1) ) {
+          infected <- sum(rbinom(S[i], 1, p_infeccion))
+          recovered <- sum(rbinom(I[i], 1, p_recuperacion))
+          S[i+1] <- S[i]-infected
+          I[i+1] <- I[i]+infected-recovered
+          R[i+1] <- R[i]+recovered
+          muertos_S <- sum(rbinom(S[i+1], 1, p_muerte))
+          muertos_I <- sum(rbinom(I[i+1], 1, p_muerte))
+          muertos_R <- sum(rbinom(R[i+1], 1, p_muerte))
+          S[i+1] <- S[i+1]-muertos_S
+          I[i+1] <- I[i+1]-muertos_I
+          R[i+1] <- R[i+1]-muertos_R
+          nacimientos <- muertos_S+muertos_I+muertos_R
+          S[i+1] <- S[i+1]+nacimientos
+        }
+        
+        p <- ggplot() +
+          geom_line(aes(x=t, y=S, color='Susceptibles')) +
+          geom_line(aes(x=t, y=I, color='Infectados')) +
+          geom_line(aes(x=t, y=R, color='Recuperados')) +
+          xlab('Tiempo (s)') +
+          ylab('Personas') +
+          labs(title = 'Modelo SIR')
+        
+        p
       })
       output$plot4 <- renderPlot({
         dias <- 365*2
