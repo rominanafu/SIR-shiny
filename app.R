@@ -435,7 +435,7 @@ server <- function(input, output, session) {
                 label = tags$i(class = "fa fa-arrow-left"),
                 style = "margin-right: 25px; background-color: #00cbcc; border: none; cursor: pointer;"
               ),
-              span("Lorem ipsum", style = "color: #00cbcc; font-weight: bold;") ######################################### CAMBIAR NOMBRE
+              span("Modelos", style = "color: #00cbcc; font-weight: bold;") ######################################### CAMBIAR NOMBRE
             )
           ),
           
@@ -533,7 +533,7 @@ server <- function(input, output, session) {
                       div(
                         class = "parameters-section",
                         style = "background-color: #2c3e50; padding: 10px; border-radius: 8px;
-                        padding-left: 30px; padding-right: 30px; margin-left: 20px; margin-right: 10px;",
+                        padding-left: 20px; padding-right: 20px; margin-left: 20px; margin-right: 10px;",
                         
                         h4(style = "color: #fff; text-align: center; font-weight: bold; ", "Parámetros SIR"),
                         
@@ -543,27 +543,27 @@ server <- function(input, output, session) {
                           
                           tags$tbody(
                             tags$tr(
-                              tags$td("uno", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Población", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_uno"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("dos", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("% población susceptible", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_dos"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("tres", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Mu", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_tres"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("cuatro", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Beta", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_cuatro"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("cinco", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Gamma", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_cinco"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("seis", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Días a graficar", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_seis"), style = "text-align: left;")
                             )
                           )
@@ -710,27 +710,27 @@ server <- function(input, output, session) {
                           
                           tags$tbody(
                             tags$tr(
-                              tags$td("uno", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Mu", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_uno"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("dos", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Beta", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_dos"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("tres", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Gamma", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_tres"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("cuatro", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("P", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_cuatro"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("cinco", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("U", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_cinco"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("seis", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("T max", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_seis"), style = "text-align: left;")
                             )
                           )
@@ -865,27 +865,27 @@ server <- function(input, output, session) {
                           
                           tags$tbody(
                             tags$tr(
-                              tags$td("uno", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("N", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_uno"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("dos", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("I(1)", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_dos"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("tres", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("p_infección", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_tres"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("cuatro", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("p_recuperación", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_cuatro"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("cinco", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("p_muerte", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_cinco"), style = "text-align: left;")
                             ),
                             tags$tr(
-                              tags$td("seis", style = "padding-right: 20px; text-align: right;"),
+                              tags$td("Días", style = "padding-right: 20px; text-align: right;"),
                               tags$td(textOutput("param_seis"), style = "text-align: left;")
                             )
                           )
@@ -1043,23 +1043,6 @@ server <- function(input, output, session) {
                     ),
                     
                     # Sección de información (debajo de la tabla de parámetros)
-                    div(
-                      class = "info-section",
-                      style = "color: #ffffff; margin-top: 20px; margin-bottom: 20px;",
-                      p("Duis ut nulla id tellus sodales tempor in sit amet risus.
-                          Fusce ac pulvinar ipsum, id commodo risus. Nunc rutrum mi ipsum,
-                          ac faucibus elit dapibus vitae. Integer est enim, finibus ac pretium in,
-                          ullamcorper vel est. Nulla in est quis arcu maximus dictum et non metus.
-                          Donec tempor suscipit risus. Quisque accumsan, tortor eu sagittis
-                          tincidunt, lacus leo suscipit nisl, id lobortis nulla sapien nec nulla.
-                          Vestibulum faucibus vel dui nec dignissim. Etiam aliquam egestas justo,
-                          nec egestas nunc. Fusce faucibus egestas tempor. Morbi faucibus augue
-                          varius tincidunt pretium. Aliquam tempor, tellus non fringilla viverra,
-                          turpis nibh fringilla massa, sit amet congue ex neque posuere risus.
-                          Aliquam dignissim ex et purus mattis imperdiet. Integer mauris risus,
-                          porta nec pulvinar sit amet, viverra sit amet ex.")
-                    ),
-                    
                     div(
                       class = "diagram-section",
                       style = "margin-top: 40px; display: flex; align-items: center;
