@@ -487,7 +487,7 @@ server <- function(input, output, session) {
                       class = "title-section",
                       style = "font-size: 2rem; color: #00cbcc; font-weight: bold; margin-bottom: 15px;
                       margin-top: 10px;",
-                      "Título"
+                      "Modelo SIR con ecuaciones diferenciales"
                     ),
                     
                     div(
@@ -509,17 +509,17 @@ server <- function(input, output, session) {
                                  de manera uniforme, lo que permite calcular la tasa de nuevos contagios 
                                  igual a \\(\\beta S \\frac{I}{N}\\), donde \\(\\boldsymbol{\\beta}\\) es la tasa de 
                                  transmisión y \\(\\textbf{N}\\) el tamaño total de la población",
-                                 class = "eqtext"),
+                                  class = "eqtext"),
                           tags$li("Hay una recuperación 
                                  constante a una tasa \\(\\boldsymbol{\\gamma} \\)",
-                                 class = "eqtext"),
+                                  class = "eqtext"),
                           tags$li("Los recuperados no pueden volver 
                                  a infectarse ni transmitir la enfermedad",
-                                 class = "eqtext"),
+                                  class = "eqtext"),
                           tags$li("Se considera una 
                                  tasa de mortalidad \\(\\boldsymbol{\\mu} \\) que es igual a la tasa de nacimientos, 
                                  por lo que la población se mantiene constante en todo momento",
-                                 class = "eqtext")
+                                  class = "eqtext")
                         ),
                         tags$p("En este modelo, 
                                el número reproductivo básico \\(R_0\\) puede ser escrito en términos de los 
@@ -633,22 +633,22 @@ server <- function(input, output, session) {
                   
                   # Pestaña de modelo 2 con EDOs
                   tabPanel(
-                    title = "SIR + vacunación",
+                    title = "SIR modificado",
                     
                     div(
                       class = "title-section",
                       style = "font-size: 2rem; color: #00cbcc; font-weight: bold; margin-bottom: 15px;
                       margin-top: 10px;",
-                      "Título"
+                      "Modelo SIR modificado con ecuaciones diferenciales"
                     ),
                     div(
                       style = "display: flex; justify-content: space-between; align-items: flex-start;",
                       
                       # Sección de Información (a la izquierda de la tabla de parámetros)
                       div(withMathJax(),
-                        class = "info-section",
-                        style = "color: #ffffff;",
-                        p('Ahora, el modelo SIRV se basa en el modelo SIR tradicional, 
+                          class = "info-section",
+                          style = "color: #ffffff;",
+                          p('Ahora, el modelo SIRV se basa en el modelo SIR tradicional, 
                         pero añadiendo un grupo de V (vacunados), donde u es el número de 
                         individuos susceptibles que han sido vacunados. En éste modelo, la 
                         vacunación se da de dos maneras. En primer lugar, se da eliminando 
@@ -777,13 +777,13 @@ de la vacunación sobre la población, lo cuál reduce los infectados (I) de man
                   
                   # Pestaña de modelo 1 con variables aleatorias
                   tabPanel(
-                    title = "Variables aleatorias",
+                    title = "SIR",
                     
                     div(
                       class = "title-section",
                       style = "font-size: 2rem; color: #00cbcc; font-weight: bold; margin-bottom: 15px;
                       margin-top: 10px;",
-                      "Título"
+                      "Modelo SIR estocástico"
                     ),
                     
                     div(
@@ -915,13 +915,13 @@ de la vacunación sobre la población, lo cuál reduce los infectados (I) de man
                   
                   # Pestaña de modelo 2 con variables aleatorias
                   tabPanel(
-                    title = "Modelo propio",
+                    title = "SIR modificado",
                     
                     div(
                       class = "title-section",
                       style = "font-size: 2rem; color: #00cbcc; font-weight: bold; margin-bottom: 15px;
                       margin-top: 10px;",
-                      "Título"
+                      "Modelo SIR estocástico modificado"
                     ),
                     
                     div(
@@ -1190,7 +1190,7 @@ de la vacunación sobre la población, lo cuál reduce los infectados (I) de man
     output$main_ui <- renderUI({
       div(
         
-        h1("Dashboard del Modelo SIR", style = "text-align: center;
+        h1("Modelación epidemiológica COVID-19", style = "text-align: center;
            color: #00cbcc; margin-top: 20px;"),
         
         div(
