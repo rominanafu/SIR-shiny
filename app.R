@@ -589,7 +589,7 @@ server <- function(input, output, session) {
                                               "Beta"),
                             min = 0.01,
                             max = 0.99,
-                            value = 0.3
+                            value = 0.11
                           ),
                           sliderInput(
                             inputId = 'gamma',
@@ -597,7 +597,7 @@ server <- function(input, output, session) {
                                               "Gamma"),
                             min = 0.01,
                             max = 0.99,
-                            value = 0.15
+                            value = 0.01
                           )
                         )
                       ),
@@ -698,7 +698,7 @@ server <- function(input, output, session) {
                                               "Beta"),
                             min = 0.01,
                             max = 0.99,
-                            value = 0.5
+                            value = 0.11
                           ),
                           sliderInput(
                             inputId = 'gamma_2',
@@ -706,7 +706,7 @@ server <- function(input, output, session) {
                                               "Gamma"),
                             min = 0.01,
                             max = 0.99,
-                            value = 0.04
+                            value = 0.01
                           ),
                           sliderInput(
                             inputId = 'u_2', 
