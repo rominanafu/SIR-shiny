@@ -592,7 +592,7 @@ server <- function(input, output, session) {
                       class = "diagram-section",
                       style = "margin-top: 40px; display: flex; align-items: center;
                       justify-content: center; margin-bottom: 50px;",
-                      img(src = "diagram_image.jpg", alt = "Diagrama del Modelo SIR",
+                      img(src = "diagrama-sir-ode-basico.jpg", alt = "Diagrama del Modelo SIR",
                           style = "width: 80%; border-radius: 8px;")
                     ),
                     
@@ -757,7 +757,7 @@ server <- function(input, output, session) {
                       class = "diagram-section",
                       style = "margin-top: 40px; display: flex; align-items: center;
                       justify-content: center; margin-bottom: 50px;",
-                      img(src = "diagram_image.jpg", alt = "Diagrama del Modelo SIR",
+                      img(src = "diagrama-sir-ode-vacunacion.jpg", alt = "Diagrama del Modelo SIR",
                           style = "width: 80%; border-radius: 8px;")
                     ),
                     
