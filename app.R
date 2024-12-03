@@ -5,6 +5,7 @@ library(shinyjs)
 library(ggplot2)
 library(deSolve)
 library(ggiraph)
+library(data.table)
 
 customCSS <- HTML({"
 html, body {
@@ -626,7 +627,7 @@ server <- function(input, output, session) {
                       div(withMathJax(),
                           class = "info-section",
                           style = "color: #ffffff;",
-                          p('Ahora, el modelo SIRV se basa en el modelo SIR tradicional, 
+                          p('Ahora, el modelo SIR se basa en el modelo SIR tradicional, 
                         pero añadiendo un grupo de V (vacunados), donde u es el número de 
                         individuos susceptibles que han sido vacunados. En éste modelo, la 
                         vacunación se da de dos maneras. En primer lugar, se da eliminando 
@@ -653,7 +654,7 @@ server <- function(input, output, session) {
                       tags$p("$$\\frac{dS}{dt}=\\mu N - \\beta I \\frac{S}{N} - \\mu S - u\\\\
                              \\frac{dI}{dt}=\\beta I \\frac{S}{N} - \\gamma I - \\mu I \\\\
                              \\frac{dR}{dt}=\\gamma I - \\mu R\\\\
-                             \\frac{dV}{dt} = u - uV$$"
+                             \\frac{dV}{dt} = u$$"
                              ,class = "eqcenter")
                     ),
                     div('Estas ecuaciones pueden ser representadas con el siguiente diagrama: 
@@ -1152,7 +1153,7 @@ server <- function(input, output, session) {
                  dxdt[1] = parms$mu_2*N - parms$beta_2*I*S/N - parms$mu_2*S - parms$u_2
                  dxdt[2] = parms$beta_2*I*S/N - parms$gamma_2*I - parms$mu_2*I
                  dxdt[3] = parms$gamma_2*I - parms$mu_2*R
-                 dxdt[4] = parms$u_2 - parms$u_2 * V
+                 dxdt[4] = parms$u_2
                  dxdt[5] = dxdt[1] + dxdt[2] + dxdt[3] + dxdt[4] 
                  return(list(dxdt))
                })
@@ -1215,7 +1216,7 @@ server <- function(input, output, session) {
         dias <- 200
         t <- 1:dias
         
-
+        
         S <- rep(0, dias)
         I <- rep(0, dias)
         R <- rep(0, dias)
@@ -1228,7 +1229,7 @@ server <- function(input, output, session) {
         p_recuperacion <- input$p_recuperacion3
         p_muerte <- input$p_muerte3
         
-
+        
         for (i in seq(dias - 1)) {
           infected <- sum(rbinom(S[i], 1, p_infeccion))
           recovered <- sum(rbinom(I[i], 1, p_recuperacion))
@@ -1245,21 +1246,21 @@ server <- function(input, output, session) {
           S[i + 1] <- S[i + 1] + nacimientos
         }
         
-
+        
         data <- data.frame(
           Time = rep(t, 3),
           Population = c(S, I, R),
           Category = c(rep("Susceptibles", dias), rep("Infectados", dias), rep("Recuperados", dias))
         )
         
-
+        
         plot <- ggplot(data, aes(x = Time, y = Population, color = Category)) +
           geom_line_interactive(aes(
             tooltip = Category, data_id = Category
           ), size = 1) +
           xlab("Tiempo (días)") +
           ylab("Personas") +
-          ggtitle("Modelo SIR") +
+          ggtitle("Modelo SIR estocástico básico") +
           scale_color_manual(
             values = c(
               "Susceptibles" = "#000066",
@@ -1269,7 +1270,7 @@ server <- function(input, output, session) {
             name = "Categoría"
           )
         
-
+        
         interactive_plot <- girafe(ggobj = plot)
         
         # Add interactive options
@@ -1385,12 +1386,20 @@ server <- function(input, output, session) {
         }
         
         p <- ggplot() +
-          geom_line(aes(x=t, y=S, color='Susceptibles')) +
-          geom_line(aes(x=t, y=I, color='Infectados')) +
-          geom_line(aes(x=t, y=total_deads, color='Muertes acumuladas')) +
+          geom_line(aes(x=t, y=S, color='Susceptibles'), size=1) +
+          geom_line(aes(x=t, y=I, color='Infectados'), size=1) +
+          geom_line(aes(x=t, y=total_deads, color='Muertes acumuladas'), size=1) +
           xlab('Tiempo (s)') +
           ylab('Personas') +
-          labs(title = 'Modelo SIR')
+          labs(title = 'Modelo SIR estocástico modificado') +
+          scale_color_manual(
+            values = c(
+              "Susceptibles" = "blue",
+              "Infectados" = "#CC0033",
+              "Muertes acumuladas" = "black"
+            ),
+            name = "Categoría"
+          )
         
         p
       })
