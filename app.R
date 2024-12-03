@@ -395,7 +395,7 @@ server <- function(input, output, session) {
             tags$p(
               "El modelo divide a la población en tres grupos: los susceptibles (S), 
             los infectados (I) y los recuperados (R). Los parámetros clave son la 
-            tasa de transmisión (\\(\\gamma\\)) y la tasa de recuperación (\\(\\beta\\)), de los cuales 
+            tasa de transmisión (\\(\\beta\\)) y la tasa de recuperación (\\(\\gamma\\)), de los cuales 
             se deriva el número reproductivo básico (\\(R_0\\)), una medida crítica 
             para determinar si una enfermedad puede generar un brote. Además de 
             su aplicación en epidemiología, el modelo SIR también se utiliza en 
