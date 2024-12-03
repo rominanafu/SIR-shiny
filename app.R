@@ -725,7 +725,88 @@ server <- function(input, output, session) {
                         girafeOutput("sir_modificado_edos", height = "100%")
                       )
                     )
-                  )
+                  ),
+                  
+                  
+                  tabPanel(
+                    title = "Comparación visual",
+                    
+                    div(
+                      class = "title-section",
+                      style = "font-size: 2rem; color: #00cbcc; font-weight: bold; margin-bottom: 15px;
+                      margin-top: 10px;",
+                      "Comparación de los modelos deterministas"
+                    ),
+                    
+                    div(
+                      style = "display: flex;",
+                      div(
+                        style = "flex: 1; margin-right: 20px;
+                                 display: flex; align-items: flex-start;",
+                        div(
+                          style = "display: flex;",
+                          div(
+                            style = "flex: 1; margin-right: 20px;
+                                 display: flex; align-items: flex-start;",
+                            div(
+                              style = "background-color: #2c3e50;
+                           padding: 15px;
+                           border-radius: 8px;
+                           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+                           max-width: 250px;
+                           color: #fff;",
+                              sliderInput(
+                                inputId = 's_por_5',
+                                label = tags$span(style = "font-weight: bold; color: #fff;",
+                                                  "Porcentaje de población inicial susceptible"),
+                                min = 0.001,
+                                max = 0.999,
+                                value = 0.999
+                              ), sliderInput(
+                                inputId = 'mu_5',
+                                label = tags$span(style = "font-weight: bold; color: #fff;",
+                                                  "Mu"),
+                                min = 0.0,
+                                max = 0.05,
+                                value = 0.001
+                              ),
+                              sliderInput(
+                                inputId = 'beta_5',
+                                label = tags$span(style = "font-weight: bold; color: #fff;",
+                                                  "Beta"),
+                                min = 0.01,
+                                max = 0.99,
+                                value = 0.11
+                              ),
+                              sliderInput(
+                                inputId = 'gamma_5',
+                                label = tags$span(style = "font-weight: bold; color: #fff;",
+                                                  "Gamma"),
+                                min = 0.01,
+                                max = 0.99,
+                                value = 0.01
+                              ),
+                              sliderInput(
+                                inputId = 'u_5', 
+                                label = tags$span(style = 'font-weight: bold; color: #fff;', 
+                                                  "Personas vacunadas por día"), 
+                                min = 1, 
+                                max = 40, 
+                                value = 4
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      div(
+                        style = "flex: 3;",
+                        plotOutput("plot5", height = "100%")
+                      )
+                    )
+                  
+                  
+                )
+                
                 )
               ),
               
@@ -972,6 +1053,78 @@ server <- function(input, output, session) {
                         plotOutput("plot4", height = "100%")
                       )
                     )
+                  ),
+                  
+                  tabPanel(
+                    title = "Comparación visual",
+                    
+                    div(
+                      class = "title-section",
+                      style = "font-size: 2rem; color: #00cbcc; font-weight: bold; margin-bottom: 15px;
+                      margin-top: 10px;",
+                      "Comparación de los modelos estocásticos"
+                    ),
+                    
+                    div(
+                      style = "display: flex;",
+                      div(
+                        style = "flex: 1; margin-right: 20px;
+                                 display: flex; align-items: flex-start;",
+                        div(
+                          style = "background-color: #2c3e50;
+                           padding: 15px;
+                           border-radius: 8px;
+                           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+                           max-width: 250px;
+                           color: #fff;",
+                          
+                          sliderInput(
+                            inputId = "prob_cuarentena_sintomatico_6",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Probabilidad de ir a cuarentena siendo sintomático"),
+                            min = 0,
+                            max = 1,
+                            value = 0.95
+                          ),
+                          sliderInput(
+                            inputId = "prob_recuperarse_6",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Probabilidad de recuperarse"),
+                            min = 0,
+                            max = 1,
+                            value = 0.90
+                          ),
+                          sliderInput(
+                            inputId = "dias_cubrebocas_6",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Dia a partir del que se usa el cubrebocas"),
+                            min = 0,
+                            max = 365,
+                            value = 180
+                          ),
+                          sliderInput(
+                            inputId = "dias_inmunidad_6",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Dias de inmunidad"),
+                            min = 0,
+                            max = 100,
+                            value = 60
+                          ),
+                          sliderInput(
+                            inputId = "promedio_interacciones_6",
+                            label = tags$span(style = "font-weight: bold; color: #fff;",
+                                              "Promedio de interacciones diarias de una persona"),
+                            min = 0,
+                            max = 10,
+                            value = 5
+                          )
+                        )
+                      ),
+                      div(
+                        style = "flex: 3;",
+                        plotOutput("plot6", height = "100%")
+                      )
+                    )
                   )
                   
                 ),
@@ -1053,24 +1206,6 @@ server <- function(input, output, session) {
         )
         
       })
-      
-      # PARÁMETROS DE EJEMPLO
-      params2 <- list(
-        R0 = 3.5,
-        beta = 0.3,
-        gamma = 0.1,
-        sigma = 0.15,
-        omega = 0.05,
-        mu = 0.01
-      )
-      
-      # Output de cada parámetro
-      output$param_uno <- renderText({ sprintf("%.1f", params2$R0) })
-      output$param_dos <- renderText({ sprintf("%.3f", params2$beta) })
-      output$param_tres <- renderText({ sprintf("%.3f", params2$gamma) })
-      output$param_cuatro <- renderText({ sprintf("%.3f", params2$sigma) })
-      output$param_cinco <- renderText({ sprintf("%.3f", params2$omega) })
-      output$param_seis <- renderText({ sprintf("%.3f", params2$mu) })
       
       # Output de plots
       output$sir_basico_edos <- renderGirafe({ 
@@ -1283,6 +1418,7 @@ server <- function(input, output, session) {
         
         return(interactive_plot)
       })
+      
       output$plot4 <- renderPlot({
         dias <- 365
         t <- 1:dias
@@ -1404,18 +1540,318 @@ server <- function(input, output, session) {
         p
       })
       
+      output$plot5 <- renderPlot({
+        
+        sir.sol <- function(t, state, parms) {
+          mu <- parms$mu_5
+          beta <- parms$beta_5
+          gamma <- parms$gamma_5
+          
+          with(as.list(state), {
+            dndt <- rep(0, length(state))
+            dndt[1] <- mu * N - beta * I * S / N - mu * S
+            dndt[2] <- beta * I * S / N - gamma * I - mu * I
+            dndt[3] <- gamma * I - mu * R
+            dndt[4] <- mu * (N - S - I - R)
+            return(list(dndt))
+          })
+        }
+        
+        # Parámetros iniciales
+        t <- seq(0, 365, 1)
+        N <- 10000
+        S <- N * input$s_por_5
+        I <- N - S
+        R <- 0
+        init <- c(S = S, I = I, R = R, N = N)
+        
+        # Solución de las ecuaciones diferenciales
+        solucion1 <- ode(y = init, times = t, func = sir.sol, parms = input)
+        solucion1 <- as.data.frame(solucion1)
+        
+        #funcion con las ecuaciones diferenciales 
+        sir.sol.2 <- function(t, state, parms) {
+          with(as.list(state), 
+               {
+                 dxdt = rep(0, length(state))
+                 dxdt[1] = parms$mu_5*N - parms$beta_5*I*S/N - parms$mu_5*S - parms$u_5
+                 dxdt[2] = parms$beta_5*I*S/N - parms$gamma_5*I - parms$mu_5*I
+                 dxdt[3] = parms$gamma_5*I - parms$mu_5*R
+                 dxdt[4] = parms$u_5
+                 dxdt[5] = dxdt[1] + dxdt[2] + dxdt[3] + dxdt[4] 
+                 return(list(dxdt))
+               })
+        }
+        
+        t = seq(0, 365, 0.1) 
+        N = 10000
+        S = N * input$s_por_5
+        I = N - S 
+        R = 0 
+        V = 0
+        init = c(S = S, I = I, R = R, V = V, N = N)
+        
+        Output <- ode(y = init, times = t, func = sir.sol.2, parms = input)
+        solucion <- as.data.frame(Output)
+        
+        plot <- ggplot() +
+          geom_line(aes(x = solucion1[[1]], y = solucion1$S, color = 'susceptibles', linetype = 'Sin vacunación')) +
+          geom_line(aes(x = solucion1[[1]], y = solucion1$I, color = 'infectados', linetype = 'Sin vacunación')) +
+          geom_line(aes(x = solucion1[[1]], y = solucion1$R, color = 'recuperados', linetype = 'Sin vacunación')) +
+          geom_line(aes(x = solucion[[1]], y = solucion$S, color = 'susceptibles', linetype = 'Con vacunación')) +
+          geom_line(aes(x = solucion[[1]], y = solucion$I, color = 'infectados', linetype = 'Con vacunación')) +
+          geom_line(aes(x = solucion[[1]], y = solucion$R, color = 'recuperados', linetype = 'Con vacunación')) +
+          geom_line(aes(x = solucion[[1]], y = solucion$V, color = 'vacunados', linetype = 'Con vacunación')) +
+          xlab("Tiempo (días)") +
+          ylab("Población") +
+          ggtitle("Modelo SIR Determinista") +
+          scale_color_manual(
+            values = c(
+              "susceptibles" = "#000066",
+              "infectados" = "#CC0033",
+              "recuperados" = "#FF6600",
+              "vacunados" = "purple"
+            ),
+            name = "Categoría"
+          ) +
+          scale_linetype_manual(values=c("Con vacunación" = "solid", "Sin vacunación" = "dashed")) +
+          ylim(0, N)
+        
+        plot
+      })
+      
+      output$plot6 <- renderPlot({
+        dias <- 365
+        t <- 1:dias
+        
+        dias_incubacion <- 4
+        dias_infeccion <- 7
+        dias_inmunidad <- input$dias_inmunidad_6
+        
+        N <- 10000
+        S <- rep(0, dias)
+        E <- rep(0, dias_incubacion+1)
+        I_sint <- rep(0, dias_infeccion+1)
+        IS_cuarentena <- rep(0, dias_infeccion+1)
+        I_asint <- rep(0, dias_infeccion+1)
+        I <- rep(0, dias) # E + I_sint + I_asint
+        R <- rep(0, dias_inmunidad+1)
+        total_deads <- rep(0, dias)
+        
+        E[1] <- 4
+        I[1] <- E[1] + I_sint[1] + I_asint[1]
+        S[1] <- N - I[1]
+        
+        # probabilidades
+        prob_infectarse_sin_cubrebocas <- 0.05  # sin cubrebocas
+        prob_infectarse_cubrebocas <- 0.02 # con cubrebocas
+        
+        prob_cuarentena_sint <- input$prob_cuarentena_sintomatico_6
+        prob_recuperarse <- input$prob_recuperarse_6
+        
+        prob_sintomatico <- 0.559
+        
+        bool_cubrebocas = TRUE
+        dias_cubrebocas = input$dias_cubrebocas_6
+        
+        # Rango de personas con las que alguien interactua
+        mean_interactions <- input$promedio_interacciones_6
+        stdDesv_interactions <- 2
+        
+        for (i in seq(dias-1)) {
+          
+          # actualizacion de dias
+          
+          E <- shift(E, n=1, fill = 0)
+          I_sint <- shift(I_sint, n=1, fill = 0)
+          IS_cuarentena <- shift(IS_cuarentena, n=1, fill = 0)
+          I_asint <- shift(I_asint, n=1, fill = 0)
+          R <- shift(R, n=1, fill = 0)
+          
+          if( bool_cubrebocas && i >= dias_cubrebocas ) {
+            prob_infectarse <- prob_infectarse_cubrebocas
+          }
+          else {
+            prob_infectarse <- prob_infectarse_sin_cubrebocas
+          }
+          
+          # pasar de recuperados a susceptibles
+          
+          S[i+1] <- S[i] + R[dias_inmunidad+1]
+          
+          # pasar de susceptibles a incubando
+          
+          # revisar si los que están en E también pueden contagiar (investigar)
+          p_encuentro <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
+          
+          if( S[i] != 0 ) {
+            interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
+            interacciones[interacciones < 0] <- 0
+            probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
+            contagios <- 1-rbinom(S[i], 1, probabilities)
+            infected <- sum(contagios)
+          }
+          else  {
+            infected <- 0
+          }
+          
+          S[i+1] <- S[i+1] - infected
+          E[1] <- infected
+          
+          # pasar de incubando a mostrar o no sintomas
+          
+          muestran_sintomas <- sum(rbinom(E[dias_incubacion+1], 1, prob_sintomatico))
+          I_sint[1] <- muestran_sintomas
+          I_asint[1] <- E[dias_incubacion+1] - muestran_sintomas
+          
+          # ir a cuarentena teniendo sintomas
+          
+          entran_cuarentena <- sum(rbinom(muestran_sintomas, 1, prob_cuarentena_sint))
+          IS_cuarentena[1] <- entran_cuarentena
+          
+          # pasar de infectados a recuperados
+          
+          recovered <- sum(rbinom(I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1],
+                                  1, prob_recuperarse))
+          R[1] <- recovered
+          total_deads[i+1] <- total_deads[i]+I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1]-
+            recovered
+          
+          I[i+1] <- I[i] +
+            infected -
+            I_sint[dias_infeccion+1] -
+            I_asint[dias_infeccion+1]
+          
+        }
+        
+        S2 = S
+        I2 = I
+        total_deads2 = total_deads
+        
+        dias <- 365
+        t <- 1:dias
+        
+        dias_incubacion <- 4
+        dias_infeccion <- 7
+        dias_inmunidad <- input$dias_inmunidad_6
+        
+        N <- 10000
+        S <- rep(0, dias)
+        E <- rep(0, dias_incubacion+1)
+        I_sint <- rep(0, dias_infeccion+1)
+        IS_cuarentena <- rep(0, dias_infeccion+1)
+        I_asint <- rep(0, dias_infeccion+1)
+        I <- rep(0, dias) # E + I_sint + I_asint
+        R <- rep(0, dias_inmunidad+1)
+        total_deads <- rep(0, dias)
+        
+        E[1] <- 4
+        I[1] <- E[1] + I_sint[1] + I_asint[1]
+        S[1] <- N - I[1]
+        
+        # probabilidades
+        prob_infectarse_sin_cubrebocas <- 0.05  # sin cubrebocas
+        prob_infectarse_cubrebocas <- 0.02 # con cubrebocas
+        
+        prob_cuarentena_sint <- input$prob_cuarentena_sintomatico_6
+        prob_recuperarse <- input$prob_recuperarse_6
+        
+        prob_sintomatico <- 0.559
+        
+        bool_cubrebocas = FALSE
+        dias_cubrebocas = input$dias_cubrebocas_6
+        
+        # Rango de personas con las que alguien interactua
+        mean_interactions <- input$promedio_interacciones_6
+        stdDesv_interactions <- 2
+        
+        for (i in seq(dias-1)) {
+          
+          # actualizacion de dias
+          
+          E <- shift(E, n=1, fill = 0)
+          I_sint <- shift(I_sint, n=1, fill = 0)
+          IS_cuarentena <- shift(IS_cuarentena, n=1, fill = 0)
+          I_asint <- shift(I_asint, n=1, fill = 0)
+          R <- shift(R, n=1, fill = 0)
+          
+          if( bool_cubrebocas && i >= dias_cubrebocas ) {
+            prob_infectarse <- prob_infectarse_cubrebocas
+          }
+          else {
+            prob_infectarse <- prob_infectarse_sin_cubrebocas
+          }
+          
+          # pasar de recuperados a susceptibles
+          
+          S[i+1] <- S[i] + R[dias_inmunidad+1]
+          
+          # pasar de susceptibles a incubando
+          
+          # revisar si los que están en E también pueden contagiar (investigar)
+          p_encuentro <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
+          
+          if( S[i] != 0 ) {
+            interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
+            interacciones[interacciones < 0] <- 0
+            probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
+            contagios <- 1-rbinom(S[i], 1, probabilities)
+            infected <- sum(contagios)
+          }
+          else  {
+            infected <- 0
+          }
+          
+          S[i+1] <- S[i+1] - infected
+          E[1] <- infected
+          
+          # pasar de incubando a mostrar o no sintomas
+          
+          muestran_sintomas <- sum(rbinom(E[dias_incubacion+1], 1, prob_sintomatico))
+          I_sint[1] <- muestran_sintomas
+          I_asint[1] <- E[dias_incubacion+1] - muestran_sintomas
+          
+          # ir a cuarentena teniendo sintomas
+          
+          entran_cuarentena <- sum(rbinom(muestran_sintomas, 1, prob_cuarentena_sint))
+          IS_cuarentena[1] <- entran_cuarentena
+          
+          # pasar de infectados a recuperados
+          
+          recovered <- sum(rbinom(I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1],
+                                  1, prob_recuperarse))
+          R[1] <- recovered
+          total_deads[i+1] <- total_deads[i]+I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1]-
+            recovered
+          
+          I[i+1] <- I[i] +
+            infected -
+            I_sint[dias_infeccion+1] -
+            I_asint[dias_infeccion+1]
+          
+        }
+        
+        p <- ggplot() +
+          geom_line(aes(x=t, y=S2, color='Susceptibles', linetype = "Con cubrebocas")) +
+          geom_line(aes(x=t, y=I2, color='Infectados', linetype = "Con cubrebocas")) +
+          geom_line(aes(x=t, y=total_deads2, color='Muertes acumuladas', linetype = "Con cubrebocas")) +
+          geom_line(aes(x=t, y=S, color='Susceptibles', linetype = "Sin cubrebocas")) +
+          geom_line(aes(x=t, y=I, color='Infectados', linetype = "Sin cubrebocas")) +
+          geom_line(aes(x=t, y=total_deads, color='Muertes acumuladas', linetype = "Sin cubrebocas")) +
+          xlab('Tiempo (s)') +
+          ylab('Personas') +
+          labs(title = 'Modelo SIR estocástico')
+        
+        
+        p <- p +
+          scale_linetype_manual(values=c("Con cubrebocas" = "solid", "Sin cubrebocas" = "dashed"))
+        
+        p
+      })
+      
       
       
     }
-    # else if (input$page$id == "comp") { # Variables aleatorias
-    #   
-    #   output$main_ui <- renderUI({
-    #     div(
-    #       p("próximamente")
-    #     )
-    #   })
-    #   
-    # }
     else if (input$page$id == "ref") { # Referencias
       
       output$main_ui <- renderUI({
@@ -1500,13 +1936,6 @@ server <- function(input, output, session) {
               p("Modelación del COVID-19 con ecuaciones diferenciales y
                 varibles aleatorias")
           ),
-          
-          # # Comparación
-          # div(class = "card", onclick = "Shiny.setInputValue('page',
-          #     {id: 'comp', timestamp: new Date().getTime()});",
-          #     h2("Comparación"),
-          #     p("")
-          # ),
           
           # Referencias
           div(class = "card", onclick = "Shiny.setInputValue('page',
