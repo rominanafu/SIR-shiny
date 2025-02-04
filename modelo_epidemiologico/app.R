@@ -7,140 +7,9 @@ library(deSolve)
 library(ggiraph)
 library(data.table)
 
-customCSS <- HTML({"
-html, body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #023d54;
-    color: #ffffff;
-    position: relative;
-    /*
-    background-position: center center;
-    background-attachment: fixed;
-    */
-}
-.card {
-    background-color: #1c667a; /* rgba(255, 255, 255, 0.15) */
-    border-radius: 15px;
-    padding: 20px;
-    margin: 15px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-}
-.image-banner img {
-  width: 100%;
-  opacity: 0.8;
-}
-.image-banner {
-    position: relative;
-    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); */
-    width: 100%;
-    height: 300px;
-    background-image: url('https://www.paho.org/sites/default/files/2021-06/banner-coronavirus_0.jpg');
-    background-color: rgba(0, 0, 0, 0.5);
-    background-blend-mode: darken;
-    background-size: cover;
-    background-position: center center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
-}
-
-.banner-title {
-    position: absolute;
-    text-align: center;
-    color: #ffffff;
-    font-size: 6rem;
-    z-index: 2;
-}
-
-.return-button {
-    display: block !important;
-    margin: 20px auto !important;
-    padding: 10px 20px !important;
-    background-color: #00cbcc !important;
-    border: none !important;
-    border-radius: 5px !important;
-    color: #023d54 !important;
-    font-weight: bold !important;
-    text-align: center !important;
-    cursor: pointer !important;
-    font-size: 1.5rem !important;
-}
-.return-button:hover {
-    background-color: #00b2b2 !important;
-}
-
-.subtitulo {
-    text-align: left;
-    color: white;
-    width: 100%;
-    font-size: 2.5rem;
-    font-weight: 500;
-    padding-left: 20px;
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
-.author-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-    margin-x: 150px;
-}
-
-.author-card {
-    text-align: center;
-    color: white;
-}
-
-.author-card img {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%; /* Hace las imágenes redondas */
-    border: 3px solid #00cbcc;
-    transition: transform 0.3s;
-}
-
-.author-card p {
-    margin-top: 10px;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 30px;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-/* botón de regresar */
-.return-button-icon {
-    cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-}
-.return-button-icon:hover {
-    background-color: #00b2b2 !important;
-}
-.return-button-icon i {
-    font-size: 18px; /* Tamaño del icono */
-}
-
-"})
-
-# UI
 ui <- fluidPage(
   useShinyjs(),
-  tags$head(tags$style(customCSS)),
+  tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "style.css")),
   
   withMathJax(),
   tags$style(HTML(
@@ -803,10 +672,10 @@ server <- function(input, output, session) {
                         plotOutput("plot5", height = "100%")
                       )
                     )
+                    
+                    
+                  )
                   
-                  
-                )
-                
                 )
               ),
               
@@ -1863,33 +1732,33 @@ server <- function(input, output, session) {
           ),
           div(style="height: 20px;"),
           div(
-            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            class = "ref",
             "He, S., Peng, Y., & Sun, K. (2020). SEIR modeling of the COVID-19 and its dynamics. Nonlinear dynamics, 101(3), 1667–1680. https://doi.org/10.1007/s11071-020-05743-y"
           ),
           div(
-            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            class = "ref",
             "Hernández-Cervantes, J. J., Ávila-Pozos, R., & Jiménez-Munguía, R. R. (2022). Modelos epidemiológicos con control por vacunación en el estudio de la COVID-19. Pädi Boletín Científico De Ciencias Básicas E Ingenierías Del ICBI, 10(Especial), 108-116. https://doi.org/10.29057/icbi.v10iEspecial.8427"
           ),
           div(
-            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            class = "ref",
             "Huarachi Olivera, R. E., & Lazarte RIvera, A. M. (2021). Modelo SIR de la tendencia pandémica de COVID-19 en Perú. [SIR model of the pandemic trend of COVID-19 in Peru]. Revista de la Facultad de Ciencias Medicas (Cordoba, Argentina), 78(3), 236–242. https://doi.org/10.31053/1853.0605.v78.n3.31142"
           ),
           div(
-            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            class = "ref",
             "Prodanov D. (2022). Analytical solutions and parameter estimation of 
             the SIR epidemic model. Mathematical Analysis of Infectious Diseases, 
             163–189. https://doi.org/10.1016/B978-0-32-390504-6.00015-2"
           ),
           div(
-            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            class = "ref",
             "Sanchez, A. (2022) Análisis y ajuste de modelos para el estudio de la epidemia de covid-19 en españa. Recuperado de https://oa.upm.es/72592/3/TFG_ALBA_MARIA_SANCHEZ_MARTIN.pdf"
           ),
           div(
-            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            class = "ref",
             "Sheposh, R. (2024). Coronavirus Disease 2019 (COVID-19). Salem Press Encyclopedia of Health"
           ),
           div(
-            style = "color: white; font-size: 1.5rem; padding-bottom: 10px;",
+            class = "ref",
             "Wang, B., Andraweera, P., Elliott, S., Mohammed, H., Lassi, Z., Twigger, A., Borgas, C., Gunasekera, S., Ladhani, S., & Marshall, H. S. (2023). Asymptomatic SARS-CoV-2 Infection by Age: A Global Systematic Review and Meta-analysis. The Pediatric infectious disease journal, 42(3), 232–239. https://doi.org/10.1097/INF.0000000000003791"
           ),
           div(
