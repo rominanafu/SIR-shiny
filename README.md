@@ -16,10 +16,10 @@ systems of ODE's that describe how different population groups (Succeptible, Inf
 
         * The model uses parameters like transmission rate and recovery rate to simulate disease dynamics. Also R_0, the basic reproduction number, is a metric to understand if a pandemic will spread or decline. 
 
-        * ![Basic SIR ODE Model](www/diagrama-sir-ode-basico.jpg)
+        * ![Basic SIR ODE Model](modelo_epidemiologico/www/diagrama-sir-ode-basico.jpg)
 
     * **Extended SIR model with vaccination**: This model incorporates a V (Vaccinated) group to simulate the effects of vaccination campaigns, through a parameter u, representing the number of people vaccinated per day. 
-     - ![Extended SIR ODE Model](www/diagrama-sir-ode-vacunacion.jpg)
+     - ![Extended SIR ODE Model](modelo_epidemiologico/www/diagrama-sir-ode-vacunacion.jpg)
 
 2. **Stochastic Models**: They introduce **randomness** into the model dynamics, making them more realistic for capturing uncertainties and variations. These model use random variables to model different processes in each part of the model. 
 
@@ -27,7 +27,7 @@ systems of ODE's that describe how different population groups (Succeptible, Inf
 
         - Simulations generate different outcomes even with the same initial conditions, helping explore best and worst case scenarios. 
 
-        - ![Basic Stochastic Model](www/diagrama-sir-proba-basico.jpg)
+        - ![Basic Stochastic Model](modelo_epidemiologico/www/diagrama-sir-proba-basico.jpg)
 
 
     * **Extended Stochastic Model**: This model builds from the previous, but adds more detailed groups, such as: 
@@ -41,7 +41,7 @@ systems of ODE's that describe how different population groups (Succeptible, Inf
     
     * Parameters like quarantine probability, mask usage, or vaccination timing allow for simulating the impact of interventions on the epidemic's progression.
 
-    * ![Extended Stochastic Model](www/diagrama-sir-probabilistico.jpg)
+    * ![Extended Stochastic Model](modelo_epidemiologico/www/diagrama-sir-probabilistico.jpg)
 
 3. **Visual comparisons** 📋
 - Through the use of ggplot and different R libraries, the application provides visual toosl to compare: 
