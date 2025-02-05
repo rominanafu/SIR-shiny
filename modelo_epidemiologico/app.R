@@ -7,6 +7,13 @@ library(deSolve)
 library(ggiraph)
 library(data.table)
 
+source("sir_basico_edos.R")
+source("sir_modificado_edos.R")
+source("sir_comparacion_edos.R")
+source("sir_modificado_vars.R")
+source("sir_basico_vars.R")
+source("sir_comparacion_vars.R")
+
 ui <- fluidPage(
   useShinyjs(),
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "style.css")),
@@ -669,7 +676,7 @@ server <- function(input, output, session) {
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot5", height = "100%")
+                        plotOutput("sir_basico_vars", height = "100%")
                       )
                     )
                     
@@ -787,7 +794,7 @@ server <- function(input, output, session) {
                       ),
                       div(
                         style = "flex: 3;",
-                        girafeOutput("plot3", height = "100%")
+                        girafeOutput("sir_comparacion_edos", height = "100%")
                       )
                     )
                   ),
@@ -919,7 +926,7 @@ server <- function(input, output, session) {
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot4", height = "100%")
+                        plotOutput("sir_modificado_vars", height = "100%")
                       )
                     )
                   ),
@@ -991,7 +998,7 @@ server <- function(input, output, session) {
                       ),
                       div(
                         style = "flex: 3;",
-                        plotOutput("plot6", height = "100%")
+                        plotOutput("sir_comparacion_vars", height = "100%")
                       )
                     )
                   )
@@ -1077,645 +1084,28 @@ server <- function(input, output, session) {
       })
       
       # Output de plots
-      output$sir_basico_edos <- renderGirafe({ 
-        # Modelo SIR básico con sistema de EDOs
-        
-        # Función con las ecuaciones diferenciales
-        sir.sol <- function(t, state, parms) {
-          mu <- parms$mu
-          beta <- parms$beta
-          gamma <- parms$gamma
-          
-          with(as.list(state), {
-            dndt <- rep(0, length(state))
-            dndt[1] <- mu * N - beta * I * S / N - mu * S
-            dndt[2] <- beta * I * S / N - gamma * I - mu * I
-            dndt[3] <- gamma * I - mu * R
-            dndt[4] <- mu * (N - S - I - R)
-            return(list(dndt))
-          })
-        }
-        
-        # Parámetros iniciales
-        t <- seq(0, 365, 1)
-        N <- 10000
-        S <- N * input$s_por
-        I <- N - S
-        R <- 0
-        init <- c(S = S, I = I, R = R, N = N)
-        
-        # Solución de las ecuaciones diferenciales
-        solucion <- ode(y = init, times = t, func = sir.sol, parms = input)
-        solucion <- as.data.frame(solucion)
-        
-        # Preparar el gráfico
-        plot <- ggplot() +
-          xlab('Tiempo (días)') + ylab('Personas') +
-          geom_line_interactive(
-            aes(x = solucion[[1]], y = solucion$S, color = 'susceptibles', tooltip = 'Susceptibles', data_id = 'susceptibles'),
-            size = 1
-          ) +
-          geom_line_interactive(
-            aes(x = solucion[[1]], y = solucion$I, color = 'infectados', tooltip = 'Infectados', data_id = 'infectados'),
-            size = 1
-          ) +
-          geom_line_interactive(
-            aes(x = solucion[[1]], y = solucion$R, color = 'recuperados', tooltip = 'Recuperados', data_id = 'recuperados'),
-            size = 1
-          ) +
-          ylim(0, N) +
-          scale_color_manual(
-            values = c(
-              "susceptibles" = "#000066",
-              "infectados" = "#CC0033",
-              "recuperados" = "#FF6600"
-            ),
-            name = "Categoría"
-          ) +
-          ggtitle('Modelo SIR con ecuaciones diferenciales')
-        
-        # Convertir el gráfico en interactivo
-        interactive_plot <- girafe(ggobj = plot)
-        
-        # Opciones de interacción
-        interactive_plot <- girafe_options(
-          interactive_plot,
-          opts_hover(css = "stroke-width: 3px; transition: all 0.3s ease;"),
-          opts_hover_inv(css = "opacity:0.5; filter:saturate(10%);"),
-          opts_toolbar(saveaspng = FALSE)
-        )
-        
-        return(interactive_plot)
+      output$sir_basico_edos <- renderGirafe({
+        sir_basico_edos(input)
       })
+      
       output$sir_modificado_edos <- renderGirafe({
-        
-        #funcion con las ecuaciones diferenciales 
-        sir.sol.2 <- function(t, state, parms) {
-          with(as.list(state), 
-               {
-                 dxdt = rep(0, length(state))
-                 dxdt[1] = parms$mu_2*N - parms$beta_2*I*S/N - parms$mu_2*S - parms$u_2
-                 dxdt[2] = parms$beta_2*I*S/N - parms$gamma_2*I - parms$mu_2*I
-                 dxdt[3] = parms$gamma_2*I - parms$mu_2*R
-                 dxdt[4] = parms$u_2
-                 dxdt[5] = dxdt[1] + dxdt[2] + dxdt[3] + dxdt[4] 
-                 return(list(dxdt))
-               })
-        }
-        
-        t = seq(0, 365, 0.1) 
-        N = 10000
-        S = N * input$s_por_2
-        I = N - S 
-        R = 0 
-        V = 0
-        init = c(S = S, I = I, R = R, U = V, N = N)
-        
-        Output <- ode(y = init, times = t, func = sir.sol.2, parms = input)
-        solution = data.frame(time = Output[, 1], 
-                              susceptibles = Output[, 2],
-                              infectados = Output[, 3], 
-                              recuperados = Output[, 4], 
-                              vacunados = Output[, 5], 
-                              poblacion = Output[, 6])
-        solution_long <- tidyr::pivot_longer(
-          solution, 
-          cols = c(susceptibles, infectados, recuperados, vacunados, poblacion),
-          names_to = "category",
-          values_to = "value"
-        )
-        
-        plot <- ggplot(data = solution_long, aes(
-          x = time, y = value, color = category,
-          tooltip = category, data_id = category
-        )) +
-          geom_line_interactive(size = 1) +
-          xlab("Tiempo (días)") +
-          ylab("Población") +
-          ggtitle("Modelo SIR con Ecuaciones Diferenciales y Vacunación") +
-          scale_color_manual(
-            values = c(
-              "susceptibles" = "#000066",
-              "infectados" = "#CC0033",
-              "recuperados" = "#FF6600",
-              "vacunados" = "purple",
-              "poblacion" = "black"
-            ),
-            name = "Categoría"
-          ) +
-          ylim(0, N)
-        
-        interactive_plot <- girafe(ggobj = plot)
-        interactive_plot <- girafe_options(
-          interactive_plot,
-          opts_hover(css = "stroke-width: 3px; transition: all 0.3s ease;"),
-          opts_hover_inv(css = "opacity:0.5; filter:saturate(10%);"),
-          opts_toolbar(saveaspng = FALSE)
-        )
-        
-        return(interactive_plot)
-        
-      })
-      output$plot3 <- renderGirafe({
-        dias <- 200
-        t <- 1:dias
-        
-        
-        S <- rep(0, dias)
-        I <- rep(0, dias)
-        R <- rep(0, dias)
-        
-        N <- 10000
-        I[1] <- 3
-        S[1] <- N - I[1] - R[1]
-        
-        p_infeccion <- input$p_infeccion3
-        p_recuperacion <- input$p_recuperacion3
-        p_muerte <- input$p_muerte3
-        
-        
-        for (i in seq(dias - 1)) {
-          infected <- sum(rbinom(S[i], 1, p_infeccion))
-          recovered <- sum(rbinom(I[i], 1, p_recuperacion))
-          S[i + 1] <- S[i] - infected
-          I[i + 1] <- I[i] + infected - recovered
-          R[i + 1] <- R[i] + recovered
-          muertos_S <- sum(rbinom(S[i + 1], 1, p_muerte))
-          muertos_I <- sum(rbinom(I[i + 1], 1, p_muerte))
-          muertos_R <- sum(rbinom(R[i + 1], 1, p_muerte))
-          S[i + 1] <- S[i + 1] - muertos_S
-          I[i + 1] <- I[i + 1] - muertos_I
-          R[i + 1] <- R[i + 1] - muertos_R
-          nacimientos <- muertos_S + muertos_I + muertos_R
-          S[i + 1] <- S[i + 1] + nacimientos
-        }
-        
-        
-        data <- data.frame(
-          Time = rep(t, 3),
-          Population = c(S, I, R),
-          Category = c(rep("Susceptibles", dias), rep("Infectados", dias), rep("Recuperados", dias))
-        )
-        
-        
-        plot <- ggplot(data, aes(x = Time, y = Population, color = Category)) +
-          geom_line_interactive(aes(
-            tooltip = Category, data_id = Category
-          ), size = 1) +
-          xlab("Tiempo (días)") +
-          ylab("Personas") +
-          ggtitle("Modelo SIR estocástico básico") +
-          scale_color_manual(
-            values = c(
-              "Susceptibles" = "#000066",
-              "Infectados" = "#CC0033",
-              "Recuperados" = "#FF6600"
-            ),
-            name = "Categoría"
-          )
-        
-        
-        interactive_plot <- girafe(ggobj = plot)
-        
-        # Add interactive options
-        interactive_plot <- girafe_options(
-          interactive_plot,
-          opts_hover(css = "stroke-width: 3px; transition: all 0.3s ease;"),
-          opts_hover_inv(css = "opacity:0.5; filter:saturate(10%);"),
-          opts_toolbar(saveaspng = FALSE)
-        )
-        
-        return(interactive_plot)
+        sir_modificado_edos(input)
       })
       
-      output$plot4 <- renderPlot({
-        dias <- 365
-        t <- 1:dias
-        
-        dias_incubacion <- 4
-        dias_infeccion <- 7
-        dias_inmunidad <- input$dias_inmunidad4
-        
-        N <- 10000
-        S <- rep(0, dias)
-        E <- rep(0, dias_incubacion+1)
-        I_sint <- rep(0, dias_infeccion+1)
-        IS_cuarentena <- rep(0, dias_infeccion+1)
-        I_asint <- rep(0, dias_infeccion+1)
-        I <- rep(0, dias) # E + I_sint + I_asint
-        R <- rep(0, dias_inmunidad+1)
-        total_deads <- rep(0, dias)
-        
-        E[1] <- 4
-        I[1] <- E[1] + I_sint[1] + I_asint[1]
-        S[1] <- N - I[1]
-        
-        # probabilidades
-        prob_infectarse_sin_cubrebocas <- 0.05  # sin cubrebocas
-        prob_infectarse_cubrebocas <- 0.02 # con cubrebocas
-        
-        prob_cuarentena_sint <- input$prob_cuarentena_sintomatico
-        prob_recuperarse <- input$prob_recuperarse4
-        
-        prob_sintomatico <- 0.559
-        
-        
-        # Rango de personas con las que alguien interactua
-        mean_interactions <- input$promedio_interacciones4
-        stdDesv_interactions <- 2
-        
-        for (i in seq(dias-1)) {
-          
-          # actualizacion de dias
-          
-          E <- shift(E, n=1, fill = 0)
-          I_sint <- shift(I_sint, n=1, fill = 0)
-          IS_cuarentena <- shift(IS_cuarentena, n=1, fill = 0)
-          I_asint <- shift(I_asint, n=1, fill = 0)
-          R <- shift(R, n=1, fill = 0)
-          
-          if( input$bool_cubrebocas && i >= input$dias_cubrebocas ) {
-            prob_infectarse <- prob_infectarse_cubrebocas
-          }
-          else {
-            prob_infectarse <- prob_infectarse_sin_cubrebocas
-          }
-          
-          # pasar de recuperados a susceptibles
-          
-          S[i+1] <- S[i] + R[dias_inmunidad+1]
-          
-          # pasar de susceptibles a incubando
-          
-          # revisar si los que están en E también pueden contagiar (investigar)
-          p_encuentro <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
-          
-          if( S[i] != 0 ) {
-            interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
-            interacciones[interacciones < 0] <- 0
-            probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
-            contagios <- 1-rbinom(S[i], 1, probabilities)
-            infected <- sum(contagios)
-          }
-          else  {
-            infected <- 0
-          }
-          
-          S[i+1] <- S[i+1] - infected
-          E[1] <- infected
-          
-          # pasar de incubando a mostrar o no sintomas
-          
-          muestran_sintomas <- sum(rbinom(E[dias_incubacion+1], 1, prob_sintomatico))
-          I_sint[1] <- muestran_sintomas
-          I_asint[1] <- E[dias_incubacion+1] - muestran_sintomas
-          
-          # ir a cuarentena teniendo sintomas
-          
-          entran_cuarentena <- sum(rbinom(muestran_sintomas, 1, prob_cuarentena_sint))
-          IS_cuarentena[1] <- entran_cuarentena
-          
-          # pasar de infectados a recuperados
-          
-          recovered <- sum(rbinom(I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1],
-                                  1, prob_recuperarse))
-          R[1] <- recovered
-          total_deads[i+1] <- total_deads[i]+I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1]-
-            recovered
-          
-          I[i+1] <- I[i] +
-            infected -
-            I_sint[dias_infeccion+1] -
-            I_asint[dias_infeccion+1]
-          
-        }
-        
-        p <- ggplot() +
-          geom_line(aes(x=t, y=S, color='Susceptibles'), size=1) +
-          geom_line(aes(x=t, y=I, color='Infectados'), size=1) +
-          geom_line(aes(x=t, y=total_deads, color='Muertes acumuladas'), size=1) +
-          xlab('Tiempo (s)') +
-          ylab('Personas') +
-          labs(title = 'Modelo SIR estocástico modificado') +
-          scale_color_manual(
-            values = c(
-              "Susceptibles" = "blue",
-              "Infectados" = "#CC0033",
-              "Muertes acumuladas" = "black"
-            ),
-            name = "Categoría"
-          )
-        
-        p
+      output$sir_comparacion_edos <- renderGirafe({
+        sir_comparacion_edos(input)
       })
       
-      output$plot5 <- renderPlot({
-        
-        sir.sol <- function(t, state, parms) {
-          mu <- parms$mu_5
-          beta <- parms$beta_5
-          gamma <- parms$gamma_5
-          
-          with(as.list(state), {
-            dndt <- rep(0, length(state))
-            dndt[1] <- mu * N - beta * I * S / N - mu * S
-            dndt[2] <- beta * I * S / N - gamma * I - mu * I
-            dndt[3] <- gamma * I - mu * R
-            dndt[4] <- mu * (N - S - I - R)
-            return(list(dndt))
-          })
-        }
-        
-        # Parámetros iniciales
-        t <- seq(0, 365, 1)
-        N <- 10000
-        S <- N * input$s_por_5
-        I <- N - S
-        R <- 0
-        init <- c(S = S, I = I, R = R, N = N)
-        
-        # Solución de las ecuaciones diferenciales
-        solucion1 <- ode(y = init, times = t, func = sir.sol, parms = input)
-        solucion1 <- as.data.frame(solucion1)
-        
-        #funcion con las ecuaciones diferenciales 
-        sir.sol.2 <- function(t, state, parms) {
-          with(as.list(state), 
-               {
-                 dxdt = rep(0, length(state))
-                 dxdt[1] = parms$mu_5*N - parms$beta_5*I*S/N - parms$mu_5*S - parms$u_5
-                 dxdt[2] = parms$beta_5*I*S/N - parms$gamma_5*I - parms$mu_5*I
-                 dxdt[3] = parms$gamma_5*I - parms$mu_5*R
-                 dxdt[4] = parms$u_5
-                 dxdt[5] = dxdt[1] + dxdt[2] + dxdt[3] + dxdt[4] 
-                 return(list(dxdt))
-               })
-        }
-        
-        t = seq(0, 365, 0.1) 
-        N = 10000
-        S = N * input$s_por_5
-        I = N - S 
-        R = 0 
-        V = 0
-        init = c(S = S, I = I, R = R, V = V, N = N)
-        
-        Output <- ode(y = init, times = t, func = sir.sol.2, parms = input)
-        solucion <- as.data.frame(Output)
-        
-        plot <- ggplot() +
-          geom_line(aes(x = solucion1[[1]], y = solucion1$S, color = 'susceptibles', linetype = 'Sin vacunación')) +
-          geom_line(aes(x = solucion1[[1]], y = solucion1$I, color = 'infectados', linetype = 'Sin vacunación')) +
-          geom_line(aes(x = solucion1[[1]], y = solucion1$R, color = 'recuperados', linetype = 'Sin vacunación')) +
-          geom_line(aes(x = solucion[[1]], y = solucion$S, color = 'susceptibles', linetype = 'Con vacunación')) +
-          geom_line(aes(x = solucion[[1]], y = solucion$I, color = 'infectados', linetype = 'Con vacunación')) +
-          geom_line(aes(x = solucion[[1]], y = solucion$R, color = 'recuperados', linetype = 'Con vacunación')) +
-          geom_line(aes(x = solucion[[1]], y = solucion$V, color = 'vacunados', linetype = 'Con vacunación')) +
-          xlab("Tiempo (días)") +
-          ylab("Población") +
-          ggtitle("Modelo SIR Determinista") +
-          scale_color_manual(
-            values = c(
-              "susceptibles" = "#000066",
-              "infectados" = "#CC0033",
-              "recuperados" = "#FF6600",
-              "vacunados" = "purple"
-            ),
-            name = "Categoría"
-          ) +
-          scale_linetype_manual(values=c("Con vacunación" = "solid", "Sin vacunación" = "dashed")) +
-          ylim(0, N)
-        
-        plot
+      output$sir_modificado_vars <- renderPlot({
+        sir_modificado_vars(input)
       })
       
-      output$plot6 <- renderPlot({
-        dias <- 365
-        t <- 1:dias
-        
-        dias_incubacion <- 4
-        dias_infeccion <- 7
-        dias_inmunidad <- input$dias_inmunidad_6
-        
-        N <- 10000
-        S <- rep(0, dias)
-        E <- rep(0, dias_incubacion+1)
-        I_sint <- rep(0, dias_infeccion+1)
-        IS_cuarentena <- rep(0, dias_infeccion+1)
-        I_asint <- rep(0, dias_infeccion+1)
-        I <- rep(0, dias) # E + I_sint + I_asint
-        R <- rep(0, dias_inmunidad+1)
-        total_deads <- rep(0, dias)
-        
-        E[1] <- 4
-        I[1] <- E[1] + I_sint[1] + I_asint[1]
-        S[1] <- N - I[1]
-        
-        # probabilidades
-        prob_infectarse_sin_cubrebocas <- 0.05  # sin cubrebocas
-        prob_infectarse_cubrebocas <- 0.02 # con cubrebocas
-        
-        prob_cuarentena_sint <- input$prob_cuarentena_sintomatico_6
-        prob_recuperarse <- input$prob_recuperarse_6
-        
-        prob_sintomatico <- 0.559
-        
-        bool_cubrebocas = TRUE
-        dias_cubrebocas = input$dias_cubrebocas_6
-        
-        # Rango de personas con las que alguien interactua
-        mean_interactions <- input$promedio_interacciones_6
-        stdDesv_interactions <- 2
-        
-        for (i in seq(dias-1)) {
-          
-          # actualizacion de dias
-          
-          E <- shift(E, n=1, fill = 0)
-          I_sint <- shift(I_sint, n=1, fill = 0)
-          IS_cuarentena <- shift(IS_cuarentena, n=1, fill = 0)
-          I_asint <- shift(I_asint, n=1, fill = 0)
-          R <- shift(R, n=1, fill = 0)
-          
-          if( bool_cubrebocas && i >= dias_cubrebocas ) {
-            prob_infectarse <- prob_infectarse_cubrebocas
-          }
-          else {
-            prob_infectarse <- prob_infectarse_sin_cubrebocas
-          }
-          
-          # pasar de recuperados a susceptibles
-          
-          S[i+1] <- S[i] + R[dias_inmunidad+1]
-          
-          # pasar de susceptibles a incubando
-          
-          # revisar si los que están en E también pueden contagiar (investigar)
-          p_encuentro <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
-          
-          if( S[i] != 0 ) {
-            interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
-            interacciones[interacciones < 0] <- 0
-            probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
-            contagios <- 1-rbinom(S[i], 1, probabilities)
-            infected <- sum(contagios)
-          }
-          else  {
-            infected <- 0
-          }
-          
-          S[i+1] <- S[i+1] - infected
-          E[1] <- infected
-          
-          # pasar de incubando a mostrar o no sintomas
-          
-          muestran_sintomas <- sum(rbinom(E[dias_incubacion+1], 1, prob_sintomatico))
-          I_sint[1] <- muestran_sintomas
-          I_asint[1] <- E[dias_incubacion+1] - muestran_sintomas
-          
-          # ir a cuarentena teniendo sintomas
-          
-          entran_cuarentena <- sum(rbinom(muestran_sintomas, 1, prob_cuarentena_sint))
-          IS_cuarentena[1] <- entran_cuarentena
-          
-          # pasar de infectados a recuperados
-          
-          recovered <- sum(rbinom(I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1],
-                                  1, prob_recuperarse))
-          R[1] <- recovered
-          total_deads[i+1] <- total_deads[i]+I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1]-
-            recovered
-          
-          I[i+1] <- I[i] +
-            infected -
-            I_sint[dias_infeccion+1] -
-            I_asint[dias_infeccion+1]
-          
-        }
-        
-        S2 = S
-        I2 = I
-        total_deads2 = total_deads
-        
-        dias <- 365
-        t <- 1:dias
-        
-        dias_incubacion <- 4
-        dias_infeccion <- 7
-        dias_inmunidad <- input$dias_inmunidad_6
-        
-        N <- 10000
-        S <- rep(0, dias)
-        E <- rep(0, dias_incubacion+1)
-        I_sint <- rep(0, dias_infeccion+1)
-        IS_cuarentena <- rep(0, dias_infeccion+1)
-        I_asint <- rep(0, dias_infeccion+1)
-        I <- rep(0, dias) # E + I_sint + I_asint
-        R <- rep(0, dias_inmunidad+1)
-        total_deads <- rep(0, dias)
-        
-        E[1] <- 4
-        I[1] <- E[1] + I_sint[1] + I_asint[1]
-        S[1] <- N - I[1]
-        
-        # probabilidades
-        prob_infectarse_sin_cubrebocas <- 0.05  # sin cubrebocas
-        prob_infectarse_cubrebocas <- 0.02 # con cubrebocas
-        
-        prob_cuarentena_sint <- input$prob_cuarentena_sintomatico_6
-        prob_recuperarse <- input$prob_recuperarse_6
-        
-        prob_sintomatico <- 0.559
-        
-        bool_cubrebocas = FALSE
-        dias_cubrebocas = input$dias_cubrebocas_6
-        
-        # Rango de personas con las que alguien interactua
-        mean_interactions <- input$promedio_interacciones_6
-        stdDesv_interactions <- 2
-        
-        for (i in seq(dias-1)) {
-          
-          # actualizacion de dias
-          
-          E <- shift(E, n=1, fill = 0)
-          I_sint <- shift(I_sint, n=1, fill = 0)
-          IS_cuarentena <- shift(IS_cuarentena, n=1, fill = 0)
-          I_asint <- shift(I_asint, n=1, fill = 0)
-          R <- shift(R, n=1, fill = 0)
-          
-          if( bool_cubrebocas && i >= dias_cubrebocas ) {
-            prob_infectarse <- prob_infectarse_cubrebocas
-          }
-          else {
-            prob_infectarse <- prob_infectarse_sin_cubrebocas
-          }
-          
-          # pasar de recuperados a susceptibles
-          
-          S[i+1] <- S[i] + R[dias_inmunidad+1]
-          
-          # pasar de susceptibles a incubando
-          
-          # revisar si los que están en E también pueden contagiar (investigar)
-          p_encuentro <- (I[i]-sum(IS_cuarentena)) / (S[i]+I[i]+sum(R)-R[dias_inmunidad+1])
-          
-          if( S[i] != 0 ) {
-            interacciones <- abs(floor(rnorm(S[i], mean_interactions, stdDesv_interactions)))
-            interacciones[interacciones < 0] <- 0
-            probabilities <- (1-p_encuentro*prob_infectarse)^interacciones
-            contagios <- 1-rbinom(S[i], 1, probabilities)
-            infected <- sum(contagios)
-          }
-          else  {
-            infected <- 0
-          }
-          
-          S[i+1] <- S[i+1] - infected
-          E[1] <- infected
-          
-          # pasar de incubando a mostrar o no sintomas
-          
-          muestran_sintomas <- sum(rbinom(E[dias_incubacion+1], 1, prob_sintomatico))
-          I_sint[1] <- muestran_sintomas
-          I_asint[1] <- E[dias_incubacion+1] - muestran_sintomas
-          
-          # ir a cuarentena teniendo sintomas
-          
-          entran_cuarentena <- sum(rbinom(muestran_sintomas, 1, prob_cuarentena_sint))
-          IS_cuarentena[1] <- entran_cuarentena
-          
-          # pasar de infectados a recuperados
-          
-          recovered <- sum(rbinom(I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1],
-                                  1, prob_recuperarse))
-          R[1] <- recovered
-          total_deads[i+1] <- total_deads[i]+I_sint[dias_infeccion+1]+I_asint[dias_infeccion+1]-
-            recovered
-          
-          I[i+1] <- I[i] +
-            infected -
-            I_sint[dias_infeccion+1] -
-            I_asint[dias_infeccion+1]
-          
-        }
-        
-        p <- ggplot() +
-          geom_line(aes(x=t, y=S2, color='Susceptibles', linetype = "Con cubrebocas")) +
-          geom_line(aes(x=t, y=I2, color='Infectados', linetype = "Con cubrebocas")) +
-          geom_line(aes(x=t, y=total_deads2, color='Muertes acumuladas', linetype = "Con cubrebocas")) +
-          geom_line(aes(x=t, y=S, color='Susceptibles', linetype = "Sin cubrebocas")) +
-          geom_line(aes(x=t, y=I, color='Infectados', linetype = "Sin cubrebocas")) +
-          geom_line(aes(x=t, y=total_deads, color='Muertes acumuladas', linetype = "Sin cubrebocas")) +
-          xlab('Tiempo (s)') +
-          ylab('Personas') +
-          labs(title = 'Modelo SIR estocástico')
-        
-        
-        p <- p +
-          scale_linetype_manual(values=c("Con cubrebocas" = "solid", "Sin cubrebocas" = "dashed"))
-        
-        p
+      output$sir_basico_vars <- renderPlot({
+        sir_basico_vars(input)
+      })
+      
+      output$sir_comparacion_vars <- renderPlot({
+        sir_comparacion_vars(input)
       })
       
       
